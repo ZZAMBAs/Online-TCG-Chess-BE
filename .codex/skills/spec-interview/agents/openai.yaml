@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Interview"
+  short_description: "spec-original.md 기반 요구사항 인터뷰"
+  default_prompt: "Use $spec-interview to interview me about docs/spec/spec-original.md and write docs/spec/spec-fixed.md."
