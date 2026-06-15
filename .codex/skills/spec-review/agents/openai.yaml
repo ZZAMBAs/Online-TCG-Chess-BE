@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "Spec Review"
+  short_description: "spec-fixed.md를 섹션별로 3개 관점에서 검증"
+  default_prompt: "Use $spec-review to review docs/spec/spec-fixed.md section by section with planner, QA/security, and FE/BE developer subagents."
