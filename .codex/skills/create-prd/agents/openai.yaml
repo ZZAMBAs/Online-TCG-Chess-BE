@@ -1,4 +1,4 @@
 interface:
   display_name: "Create PRD"
-  short_description: "요구사항을 feature별 PRD/TRD로 분해"
-  default_prompt: "Use $create-prd to split docs/spec/spec-fixed.md into feature PRD/TRD documents."
+  short_description: "승인 게이트 기반 feature PRD/TRD 분해"
+  default_prompt: "Use $create-prd to split docs/spec/spec-fixed.md into approved feature PRD/TRD documents."
