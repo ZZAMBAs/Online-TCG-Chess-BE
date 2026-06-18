@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Review"
+  short_description: "프로젝트 구조와 인프라 리뷰 및 보완"
+  default_prompt: "Use $architecture-review to review architecture documents in Korean, skip unchanged areas using the prior review ledger, and update approved improvements."
