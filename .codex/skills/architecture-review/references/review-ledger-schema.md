@@ -43,6 +43,11 @@
 - operations-observability-infra
 - cicd
 - harness-guardrails
+- environment-strategy
+- release-gates
+- operational-readiness-gates
+- observability-gates
+- quality-gates
 - scalability-transition
 
 ## 생략 조건 작성 기준
@@ -59,4 +64,5 @@
 - CI/CD 또는 인프라 설정 변경
 - 보안 정책 또는 secret 처리 변경
 - 클라우드 제공자, 컴퓨팅 방식, 네트워크, DB, 캐시, CDN, 메시징 선택 변경
+- environment strategy, release gate, operational readiness gate, observability gate, quality gate 변경
 - 미확정 항목 확정

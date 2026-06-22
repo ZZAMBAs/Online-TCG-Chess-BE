@@ -38,9 +38,14 @@
 ## Redis/Cache/Message Broker 선택
 ## Object Storage와 정적 자산
 ## Secret과 환경 설정
+## Environment Strategy
 ## 관측 인프라
+## 구조화 로깅과 로그 집계
+## 메트릭, 알림, 대시보드
+## Capacity/Cost Guardrail
 ## 백업과 복구 정책
 ## MVP 제외 확장 후보
+## 후속 스킬 연계
 ## 미확정 사항
 ```
 
@@ -56,10 +61,16 @@
 ## Backend CI
 ## Frontend CI
 ## 보안과 공급망 검사
+## 테스트 리포트와 메트릭 검사
+## Release Gates
+## Smoke Test
+## Rollback Gate
+## Post-deploy Metric Check
 ## Migration 검증과 배포 순서
 ## Artifact와 버전
 ## Rollback 정책
 ## Secret 처리
+## 후속 스킬 연계
 ## 미확정 사항
 ```
 
@@ -90,26 +101,13 @@
 ## Backend 강제 규칙
 ## Frontend 강제 규칙
 ## CI Required Check
+## 테스트 실행 리포트와 메트릭
+## Release Readiness Gate
+## Operational Readiness Gate
+## Observability Gate
 ## 도입 전 PoC 항목
+## 후속 스킬 연계
 ## 미확정 사항
-```
-
-## architecture-decisions.md
-
-```markdown
-# Architecture Decisions
-
-## ADR-lite 형식
-
-### ADR-{번호}. {결정 제목}
-
-- 상태:
-- 배경:
-- 선택지:
-- 결정:
-- 포기한 대안:
-- 영향:
-- 재검토 조건:
 ```
 
 ## architecture-traceability.md
@@ -124,4 +122,3 @@
 ## architecture-review-ledger.md
 
 `architecture-review`의 `references/review-ledger-schema.md` 형식을 따른다.
-

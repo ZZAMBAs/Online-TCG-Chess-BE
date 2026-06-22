@@ -20,6 +20,7 @@ description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modul
 - 아직 구현되지 않은 영역은 아키텍처 후보로 다루고, 이미 구현된 영역은 문서와 코드 drift를 확인한다.
 - 기능 상세, API payload, DB column, 카드 효과, 화면 문구처럼 PRD/TRD에서 다룰 사항은 아키텍처 질문으로 확정하지 않는다.
 - 질문 은행 파일에 의존하지 않는다. 읽은 산출물과 현재 코드에서 필요한 아키텍처 질문을 직접 생성한다.
+- ADR 작성, issue 분리, 심층 보안 리뷰, 운영 runbook 작성은 이 스킬에서 수행하지 않고 후속 스킬 연계 항목으로 남긴다.
 - 요구사항 변경이 필요하면 직접 수정하지 않고 `상위 산출물 재검토 필요`로 기록한다.
 - 파일 작성 전에는 반영 예정 요약을 세션에 제시하고 승인받는다.
 - 개별 스킬 내부에 전체 워크플로우 순서를 강제하지 않는다.
@@ -77,12 +78,17 @@ description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modul
 - 캐시와 메시징: Redis/ElastiCache/Memorystore, pub/sub, queue 도입 여부와 MVP 제외 여부를 묻는다.
 - 정적 자산과 파일: CDN, object storage, 이미지 업로드가 필요할 때의 확장 방향을 묻는다.
 - secret과 설정: cloud secret manager, 환경 변수, CI secret, local dev secret 방식을 묻는다.
-- 관측과 운영: Prometheus/Grafana, cloud monitoring, log aggregation, alert, backup, disaster recovery 범위를 묻는다.
+- 환경 전략: local/dev/stage/prod 분리, 환경별 config와 secret 주입, test data와 seed data, config drift 방지, IaC 사용 여부를 묻는다.
+- 관측과 운영: 구조화 로깅, log aggregation, Prometheus/Grafana, cloud monitoring, metric label 정책, alert, backup, disaster recovery 범위를 묻는다.
+- capacity와 cost guardrail: managed DB/Redis/CDN/Kubernetes 도입 비용을 MVP에서 감수할지와 scale-up/scale-out 전환 조건을 묻는다. 상세 트래픽 목표와 비용 상한은 요구사항 재검토 후보로 표시한다.
 
 ### CI/CD와 AI 하네스
 
 - branch protection, required checks, 배포 승인, rollback 기준을 묻는다.
 - 서버 아키텍처를 정적 분석으로 강제할 도구와 범위를 묻는다.
+- 실제 테스트 시도 결과를 CI에서 어떻게 검증할지 묻는다. 예: test report, coverage report, 테스트 소요 시간, 실패율, flaky test 기록, artifact 보존, 추세 메트릭.
+- release readiness gate를 묻는다. 예: smoke test, migration 검증, rollback gate, 배포 전 승인, 배포 후 metric check.
+- operational readiness gate를 묻는다. 예: alert rule 검증, dashboard 존재 확인, actuator 접근 확인, 로그 수집 확인.
 - FE가 있거나 생길 예정이면 FE typecheck/lint/e2e/contract drift gate를 묻는다.
 
 ## PRD/TRD로 넘길 항목
@@ -97,6 +103,15 @@ description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modul
 - 오류 코드의 개별 명칭과 상세 메시지
 - feature별 테스트 케이스의 구체 입력값
 
+## 후속 스킬로 넘길 항목
+
+다음 항목은 아키텍처 인터뷰에서 직접 수행하지 않고 필요 여부만 표시한다.
+
+- issue/ADR 스킬: ADR 작성, 대안 비교 상세, 구현 issue 분리
+- security-review 스킬: threat modeling, abuse case 상세, 개인정보 영향 평가, 취약점 진단, 보안 테스트 상세 시나리오
+- documentation/runbook 스킬: 운영 runbook, 장애 대응 절차, 온보딩 문서, 릴리즈 노트
+- spec-interview 재검토: 트래픽 목표, 비용 상한, SLO/SLA, 보관 기간, 상세 정책값처럼 요구사항 성격이 강한 결정
+
 ## AI 하네스 질문 필수 조건
 
 서버 아키텍처를 논의할 때는 다음 도구 또는 동등한 대안을 적용할지 반드시 질문한다.
@@ -109,6 +124,8 @@ description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modul
 - Gradle dependency locking 및 verification
 - Testcontainers
 - Spring Security Test
+- CI test report와 coverage report 보존 및 실패 조건
+- 테스트 실행 메트릭: 실행 시간, 실패율, flakiness, skipped test, retry 여부
 - FE가 있으면 TypeScript strict, type-aware ESLint, dependency-cruiser, Vitest, Playwright
 
 각 도구는 `Hard gate`, `Conditional gate`, `Advisory` 중 하나로 분류하고, CI에서 실패시킬 수 있는지 확인한다.
@@ -124,7 +141,6 @@ docs/architecture/
   cicd-architecture.md
   deployment-view.md
   harness-guardrails.md
-  architecture-decisions.md
   architecture-traceability.md
   architecture-review-ledger.md
 ```
@@ -138,6 +154,8 @@ docs/architecture/
 - 문서와 구현이 충돌하면 drift로 기록한다.
 - Redis, CDN, object storage, Kubernetes, managed DB 등 인프라 구성 요소는 확정되지 않았다면 MVP 아키텍처처럼 쓰지 않는다.
 - CI에서 실패시킬 수 있는 하드 게이트와 보조 도구를 구분한다.
+- release readiness와 operational readiness 중 CI에서 실패 조건화할 수 있는 항목은 하네스 문서에 포함한다.
+- ADR, 심층 보안 리뷰, runbook 작성이 필요하면 후속 스킬 연계 항목으로 기록한다.
 
 ## 문서 반영 전 요약
 
@@ -148,4 +166,5 @@ docs/architecture/
 - 확정된 AI 하네스/정적 분석 결정
 - 미확정 사항
 - 상위 산출물 재검토 필요 항목
+- 후속 스킬 연계 필요 항목
 - 생성 또는 갱신할 아키텍처 문서
