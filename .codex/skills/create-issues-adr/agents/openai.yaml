@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Issues ADR"
+  short_description: "수직 슬라이스 이슈와 ADR 문서 작성"
+  default_prompt: "Use $create-issues-adr to split feature PRD/TRD into vertical-slice local issues with Given-When-Then AC and ADR documents in Korean."
