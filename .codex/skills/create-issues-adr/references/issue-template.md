@@ -5,13 +5,13 @@
 ## 파일 경로
 
 ```text
-docs/features/{feature}/issues/{feature}-{nnn}.md
+docs/features/{feature}/issues/{feature}-{nnn}-{slug}.md
 ```
 
 예:
 
 ```text
-docs/features/matchmaking/issues/matchmaking-001.md
+docs/features/matchmaking/issues/matchmaking-001-enter-matchmaking-queue.md
 ```
 
 ## Frontmatter
@@ -37,7 +37,7 @@ depends_on: []
 ## 본문 형식
 
 ```markdown
-# {feature}-{nnn}. {title}
+# [{feature}-{nnn}] {title}
 
 ## 목적
 
@@ -122,3 +122,4 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 - 공통 기반 작업은 기능 이슈에 묻지 말고 별도 이슈로 만든다. 단, 그 이슈도 가능한 한 TDD 가능한 결과와 검증 기준을 가져야 한다.
 - 수용 기준을 Given-When-Then으로 독립 검증할 수 없으면 더 작게 나눈다.
 - 경계와 예외 AC가 없는 이슈는 기본적으로 불완전한 이슈로 간주한다. 근거가 부족하면 미확정 사항으로 남긴다.
+- GitHub Issue 제목과 본문에는 항상 로컬 ID `{feature}-{nnn}`를 사용한다. 파일명 slug는 사람이 읽기 위한 보조 정보일 뿐이다.

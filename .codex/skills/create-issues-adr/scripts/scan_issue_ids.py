@@ -13,12 +13,15 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable
 
 
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*", re.DOTALL)
 FIELD_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*):\s*(.*)$")
 GITHUB_URL_RE = re.compile(r"github\.com/[^/\s]+/[^/\s]+/issues/(\d+)")
+ISSUE_STEM_RE = re.compile(r"^(.+)-(\d{3})(?:-.+)?$")
+ADR_STEM_RE = re.compile(r"^adr-(\d{3})(?:-.+)?$")
+ScanResult = dict[str, Any]
 
 
 def iter_markdown(root: Path, pattern: str) -> Iterable[Path]:
@@ -46,11 +49,27 @@ def parse_frontmatter(path: Path) -> dict[str, str]:
     return values
 
 
+def issue_id_from_path(path: Path) -> str:
+    match = ISSUE_STEM_RE.match(path.stem)
+    if match:
+        feature, number = match.groups()
+        return f"{feature}-{number}"
+    return path.stem
+
+
+def adr_id_from_path(path: Path) -> str:
+    feature = path.parent.parent.name.upper()
+    match = ADR_STEM_RE.match(path.stem)
+    if match:
+        return f"ADR-{feature}-{match.group(1)}"
+    return path.stem
+
+
 def collect_duplicates(items: dict[str, set[str]]) -> dict[str, list[str]]:
     return {key: sorted(paths) for key, paths in sorted(items.items()) if key and len(paths) > 1}
 
 
-def scan(root: Path) -> dict[str, object]:
+def scan(root: Path) -> ScanResult:
     issue_ids: dict[str, set[str]] = defaultdict(set)
     adr_ids: dict[str, set[str]] = defaultdict(set)
     github_issues: dict[str, set[str]] = defaultdict(set)
@@ -62,7 +81,7 @@ def scan(root: Path) -> dict[str, object]:
         rel = path.relative_to(root).as_posix()
         meta = parse_frontmatter(path)
 
-        local_id = meta.get("id") or path.stem
+        local_id = meta.get("id") or issue_id_from_path(path)
         issue_ids[local_id].add(rel)
 
         github_issue = meta.get("github_issue")
@@ -78,7 +97,7 @@ def scan(root: Path) -> dict[str, object]:
     for path in adr_paths:
         rel = path.relative_to(root).as_posix()
         meta = parse_frontmatter(path)
-        adr_id = meta.get("id") or path.stem
+        adr_id = meta.get("id") or adr_id_from_path(path)
         adr_ids[adr_id].add(rel)
 
     duplicates = {
@@ -98,10 +117,35 @@ def scan(root: Path) -> dict[str, object]:
     }
 
 
-def main() -> int:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Scan issue and ADR identifiers for duplicates.")
     parser.add_argument("--root", default=".", help="Repository root. Defaults to current directory.")
     parser.add_argument("--json", action="store_true", help="Print machine-readable JSON.")
+    return parser
+
+
+def print_text_result(result: ScanResult) -> None:
+    counts = result["counts"]
+    print(f"Scanned {counts['issues']} issue document(s) and {counts['adrs']} ADR document(s).")
+
+    if result["ok"]:
+        print("No duplicate issue IDs, ADR IDs, or GitHub issue mappings found.")
+    else:
+        print_duplicates(result["duplicates"])
+
+
+def print_duplicates(duplicates: dict[str, dict[str, list[str]]]) -> None:
+    print("Duplicates found:")
+    for category, values in duplicates.items():
+        if not values:
+            continue
+        print(f"- {category}")
+        for value, paths in values.items():
+            print(f"  - {value}: {', '.join(paths)}")
+
+
+def main() -> int:
+    parser = build_parser()
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
@@ -110,18 +154,7 @@ def main() -> int:
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     else:
-        counts = result["counts"]
-        print(f"Scanned {counts['issues']} issue document(s) and {counts['adrs']} ADR document(s).")
-        if result["ok"]:
-            print("No duplicate issue IDs, ADR IDs, or GitHub issue mappings found.")
-        else:
-            print("Duplicates found:")
-            for category, values in result["duplicates"].items():
-                if not values:
-                    continue
-                print(f"- {category}")
-                for value, paths in values.items():
-                    print(f"  - {value}: {', '.join(paths)}")
+        print_text_result(result)
 
     return 0 if result["ok"] else 1
 
