@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD RED"
+  short_description: "이슈 AC를 RED 테스트 코드로 변환"
+  default_prompt: "Use $tdd-red with auth-1 to create RED tests from a local issue AC without modifying production code."
