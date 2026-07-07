@@ -1,6 +1,6 @@
 ---
 name: create-issues-adr
-description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 산출물을 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd 이후 issue 분리, Given-When-Then AC, TDD 가능한 구현 이슈, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
+description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 산출물을 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd와 create-trd 이후 issue 분리, Given-When-Then AC, TDD 가능한 구현 이슈, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
 ---
 
 # Create Issues ADR
@@ -13,7 +13,7 @@ description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 
 
 - 모든 질문, 분석, 문서, GitHub Issue 본문은 한국어로 작성한다.
 - `docs/spec/*`, `docs/prd.md`, `docs/trd.md`, `docs/features/{feature}/prd.md`, `docs/features/{feature}/trd.md`는 입력 문서로만 취급하고 수정하지 않는다.
-- PRD/TRD가 없거나 확정되지 않았으면 이슈 생성을 멈추고 먼저 `create-prd` 산출물 확정을 요청한다.
+- PRD/TRD가 없거나 확정되지 않았으면 이슈 생성을 멈추고 먼저 `create-prd`와 `create-trd` 산출물 확정을 요청한다.
 - 기존 `docs/features/{feature}/issues/*`, `docs/features/{feature}/adr/*`, `docs/issue-map.md`, `docs/adr-index.md`가 있으면 먼저 읽고 중복 생성 대신 보완한다.
 - 로컬 문서를 원천 추적 기준으로 삼는다. GitHub Issue 생성은 사용자가 명시적으로 요청하고 승인한 경우에만 수행한다.
 - 이슈는 PRD 사용자 시나리오와 수용 기준을 구현 가능한 수직 슬라이스로 나눈다. 계층별 수평 작업만 나열하는 이슈는 만들지 않는다.
@@ -69,7 +69,7 @@ description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 
 - AC는 Given-When-Then 형식으로 작성하고 각 항목 앞에 `[정상]`, `[경계]`, `[예외]` 중 하나를 붙인다.
 - 정상 상황뿐 아니라 경계 조건과 예외 상황을 반드시 포함한다. PRD/TRD에 근거가 부족하면 "미확정 사항"으로 표시하고 사용자 확인이 필요하다고 적는다.
 - 각 이슈에는 TDD 진행 순서를 포함한다. 먼저 실패해야 할 테스트를 쓰고, 최소 구현, 리팩터링, 하네스/정적 분석 검증 순으로 적는다.
-- REST/STOMP가 사용자 또는 FE에 보이는 결과이면 단위 테스트뿐 아니라 계약/API 테스트 관점을 포함한다. 하네스가 아직 없으면 기능 이슈에 묻지 말고 하네스 선행 작업 또는 `미확정 사항`으로 분리한다.
+- REST/STOMP가 사용자 또는 외부 호출자에게 보이는 결과이면 단위 테스트뿐 아니라 계약/API 테스트 관점을 포함한다. 하네스가 아직 없으면 기능 이슈에 묻지 말고 하네스 선행 작업 또는 `미확정 사항`으로 분리한다.
 - 수용 기준과 테스트는 PRD/TRD의 요구사항과 연결될 만큼 구체적으로 작성한다.
 
 ## ADR 작성 규칙
