@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD BLUE"
+  short_description: "GREEN 구현을 안전하게 리팩터링"
+  default_prompt: "Use $tdd-blue with auth-1 to refactor only the GREEN production changes after baseline tests pass."

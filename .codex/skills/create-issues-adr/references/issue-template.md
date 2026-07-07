@@ -5,13 +5,13 @@
 ## 파일 경로
 
 ```text
-docs/features/{feature}/issues/{feature}-{nnn}-{slug}.md
+docs/features/{feature}/issues/{feature}-{nnn}-{slug}/issue.md
 ```
 
 예:
 
 ```text
-docs/features/matchmaking/issues/matchmaking-001-enter-matchmaking-queue.md
+docs/features/matchmaking/issues/matchmaking-001-enter-matchmaking-queue/issue.md
 ```
 
 ## Frontmatter
@@ -118,6 +118,10 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 
 `tdd-green`이 최신 GREEN 단계 요약으로 갱신한다. 실행 이력은 누적하지 않는다.
 
+## TDD BLUE 결과
+
+`tdd-blue`가 이슈 디렉터리의 `refactor-log.md`를 최신 BLUE 결과로 갱신한다. 성공, 불필요, 차단은 최신 스냅샷으로 덮어쓰고, 3회 실패 내역은 누적 가능하다.
+
 ## 관련 문서
 
 - PRD/TRD/architecture/traceability 문서 경로와 관련 섹션을 적는다.
@@ -135,4 +139,4 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 - 후속 번호 이슈는 기본적으로 이전 번호 이슈 완료 후 진행한다. 병렬 가능 이슈는 의존 관계 섹션에 독립 사유를 남긴다.
 - 수용 기준을 Given-When-Then으로 독립 검증할 수 없으면 더 작게 나눈다.
 - 경계와 예외 AC가 없는 이슈는 기본적으로 불완전한 이슈로 간주한다. 근거가 부족하면 미확정 사항으로 남긴다.
-- GitHub Issue 제목과 본문에는 항상 로컬 ID `{feature}-{nnn}`를 사용한다. 파일명 slug는 사람이 읽기 위한 보조 정보일 뿐이다.
+- GitHub Issue 제목과 본문에는 항상 로컬 ID `{feature}-{nnn}`를 사용한다. 이슈 디렉터리명 slug는 사람이 읽기 위한 보조 정보일 뿐이다.

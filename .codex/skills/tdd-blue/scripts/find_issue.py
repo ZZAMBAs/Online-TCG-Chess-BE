@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Find a local feature issue directory for the tdd-green skill."""
+"""Find a local feature issue directory for the tdd-blue skill."""
 
 from __future__ import annotations
 
@@ -92,6 +92,7 @@ def main() -> int:
         "issue_number": issue_number,
         "issue_dir": str(issue_dir.relative_to(root)),
         "issue_file": str((issue_dir / "issue.md").relative_to(root)),
+        "refactor_log": str((issue_dir / "refactor-log.md").relative_to(root)),
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

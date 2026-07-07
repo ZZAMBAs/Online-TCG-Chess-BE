@@ -50,11 +50,12 @@ def parse_frontmatter(path: Path) -> dict[str, str]:
 
 
 def issue_id_from_path(path: Path) -> str:
-    match = ISSUE_STEM_RE.match(path.stem)
+    issue_dir = path.parent if path.name == "issue.md" else path
+    match = ISSUE_STEM_RE.match(issue_dir.name)
     if match:
         feature, number = match.groups()
         return f"{feature}-{number}"
-    return path.stem
+    return issue_dir.name
 
 
 def adr_id_from_path(path: Path) -> str:
@@ -74,7 +75,7 @@ def scan(root: Path) -> ScanResult:
     adr_ids: dict[str, set[str]] = defaultdict(set)
     github_issues: dict[str, set[str]] = defaultdict(set)
 
-    issue_paths = list(iter_markdown(root, "docs/features/*/issues/*.md"))
+    issue_paths = list(iter_markdown(root, "docs/features/*/issues/*/issue.md"))
     adr_paths = list(iter_markdown(root, "docs/features/*/adr/*.md"))
 
     for path in issue_paths:

@@ -18,7 +18,7 @@ description: 로컬 feature 이슈 문서의 사용자 시나리오와 Given-Whe
 - 끝에서 두 번째 토큰이 `issues`이면 구분자로만 보고 feature 이름에서 제외한다.
 - `xxx-yyy-1`은 feature=`xxx-yyy`, issue number=`1`로 해석한다.
 - 이슈 번호 입력은 0-padding 없이 받아들이되, 이슈 파일 탐색은 번호의 정수값으로 비교한다. 예를 들어 `1`과 `001`은 같은 이슈 번호다.
-- 이슈 문서는 `docs/features/{feature}/issues/{feature}-{nnn}-{slug}.md` 계열 파일에서 정확히 하나만 찾아야 한다. 없거나 여러 개면 추측하지 말고 종료한다.
+- 이슈 디렉터리는 `docs/features/{feature}/issues/{feature}-{nnn}-{slug}/` 계열에서 정확히 하나만 찾아야 하며, 그 안의 `issue.md`를 이슈 문서로 본다. 없거나 여러 개면 추측하지 말고 종료한다.
 - 이슈 탐색은 먼저 `scripts/find_issue.py`를 실행해 검증한다.
 
 ```bash
