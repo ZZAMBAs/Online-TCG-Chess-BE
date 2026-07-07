@@ -112,11 +112,11 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 
 ## TDD RED 결과
 
-- 테스트 파일:
-- 테스트 메서드와 연결 AC:
-- 상태: `skeleton-pass`, `red-fail`, `already-green`, `compile-blocked`, `harness-missing`, `blocked`
-- 실행한 명령:
-- 실패 또는 차단 요약:
+`tdd-red`가 최신 RED 단계 요약으로 갱신한다. 실행 이력은 누적하지 않는다.
+
+## TDD GREEN 결과
+
+`tdd-green`이 최신 GREEN 단계 요약으로 갱신한다. 실행 이력은 누적하지 않는다.
 
 ## 관련 문서
 

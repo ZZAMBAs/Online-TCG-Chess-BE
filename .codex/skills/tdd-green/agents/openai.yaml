@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD GREEN"
+  short_description: "RED 테스트를 최소 구현으로 통과시키기"
+  default_prompt: "Use $tdd-green with auth-1 to implement the minimum production code needed to pass RED tests for a local issue."
