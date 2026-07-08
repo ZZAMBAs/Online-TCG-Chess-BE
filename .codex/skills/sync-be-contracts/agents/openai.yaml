@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync BE Contracts"
+  short_description: "FE/BE 확정 규약을 BE 구현 문서로 정리"
+  default_prompt: "Use $sync-be-contracts to turn fixed FE/BE negotiation summaries into BE implementation contract documents under docs/contracts."
