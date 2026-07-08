@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Review"
+  short_description: "BLUE 이후 독립 보안 검증"
+  default_prompt: "Use $security-review auth-1 to run an independent security review after TDD BLUE."
