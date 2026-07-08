@@ -50,7 +50,7 @@ python3 .codex/skills/tdd-blue/scripts/find_issue.py auth-1 --root .
 5. 현재 이슈의 `## TDD GREEN 결과`
 6. 현재 이슈 디렉터리의 `refactor-log.md`
 7. 현재 이슈 디렉터리의 `security-review.md`
-8. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket 관련 문서
+8. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket/contracts 관련 문서
 9. 요구사항 원천인 `docs/spec/spec-fixed.md`
 10. 관련 `src/test/java`, `src/test/resources`
 11. 관련 `src/main/java`, `src/main/resources`
@@ -71,6 +71,7 @@ python3 .codex/skills/tdd-blue/scripts/find_issue.py auth-1 --root .
 4. 구현 코드가 AC를 실제로 만족하는지 확인한다.
    - Controller, WebSocket handler, application service, domain, repository, configuration, mapper, DTO, exception handler까지 필요한 경로를 따라간다.
    - 서버 권위, 인증/인가, 상태 불변성, 오류 포맷, persistence, 이벤트 발행, 감사/보안 로그 요구를 각각 확인한다.
+   - 이슈가 `docs/contracts/{topic}.md`를 참조하면 해당 계약의 ready 상태와 REST/STOMP, 인증/보안, 상태 동기화, 오류 포맷, fixture/drift 검증 요구가 테스트와 구현에 반영되었는지 확인한다.
 5. BLUE 리팩터링 이후 동작 보존 여부를 확인한다.
    - `refactor-log.md`가 `blue-pass` 또는 `blue-noop`인지 확인한다.
    - 리팩터링이 AC, REST/STOMP 계약, 오류 포맷, persistence schema를 바꾸지 않았는지 확인한다.

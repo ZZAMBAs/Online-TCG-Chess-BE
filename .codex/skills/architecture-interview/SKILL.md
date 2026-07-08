@@ -1,13 +1,13 @@
 ---
 name: architecture-interview
-description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modular monolith, monolith, MSA 등), 인프라 아키텍처(AWS/GCP/Azure, VM/PaaS/Kubernetes, CDN, Redis/ElastiCache, RDS/Cloud SQL, DB/NoSQL 등), CI/CD, AI 하네스 방어 장치를 한국어 인터뷰로 자세히 확정하고 승인 후 docs/architecture 문서로 생성·갱신해야 할 때 사용한다. 기존 spec/prd/trd/websocket/architecture 산출물과 현재 구현 코드를 읽고, 아키텍처 선택지를 직접 도출해 한 번에 하나씩 충분히 많은 질문과 추천안을 제시해야 할 때 사용한다.
+description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modular monolith, monolith, MSA 등), 기술 스택, 인프라 아키텍처(AWS/GCP/Azure, VM/PaaS/Kubernetes, CDN, Redis/ElastiCache, RDS/Cloud SQL, DB/NoSQL 등), CI/CD, AI 하네스 방어 장치를 한국어 인터뷰로 자세히 확정하고 승인 후 docs/architecture 문서와 필요한 repo 설정에 반영해야 할 때 사용한다. 기존 spec/prd/trd/websocket/architecture 산출물과 현재 구현 코드를 읽고, 아키텍처 선택지를 직접 도출해 한 번에 하나씩 충분히 많은 질문과 추천안을 제시해야 할 때 사용한다.
 ---
 
 # Architecture Interview
 
 ## 개요
 
-서버 아키텍처 스타일, 인프라 아키텍처, CI/CD, AI 하네스 품질 게이트 결정을 한국어 인터뷰로 구체화하고, 승인된 결정은 `docs/architecture/` 문서로 생성하거나 갱신한다. PRD/TRD가 다룰 기능별 상세 요구사항을 다시 묻지 않고, 구현과 운영의 큰 구조를 결정한다.
+서버 아키텍처 스타일, 기술 스택, 인프라 아키텍처, CI/CD, AI 하네스 품질 게이트 결정을 한국어 인터뷰로 구체화하고, 승인된 결정은 `docs/architecture/` 문서와 필요한 repo 설정에 반영한다. PRD/TRD가 다룰 기능별 상세 요구사항을 다시 묻지 않고, 구현과 운영의 큰 구조를 결정한다.
 
 ## 기본 원칙
 
@@ -23,6 +23,7 @@ description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modul
 - ADR 작성, issue 분리, 심층 보안 리뷰, 운영 runbook 작성은 이 스킬에서 수행하지 않고 후속 스킬 연계 항목으로 남긴다.
 - 요구사항 변경이 필요하면 직접 수정하지 않고 `상위 산출물 재검토 필요`로 기록한다.
 - 파일 작성 전에는 반영 예정 요약을 세션에 제시하고 승인받는다.
+- 승인된 아키텍처/하네스/CI 결정을 문서에만 남기면 후속 TDD가 막히는 경우, 승인 범위 안에서 repo 설정과 검증 파일도 직접 반영한다.
 - 개별 스킬 내부에 전체 워크플로우 순서를 강제하지 않는다.
 
 ## 먼저 확인할 자료
@@ -61,6 +62,7 @@ description: 서버 아키텍처 스타일(layered, clean, hexagonal, DDD, modul
 
 ### 서버 아키텍처
 
+- 기술 스택 기준: Java/Spring Boot 버전 유지 또는 변경, persistence/ORM, migration, session, security, WebSocket/STOMP, OpenAPI/JSON Schema, 테스트 도구 선택을 묻는다.
 - 전체 구조 선택: monolith, layered monolith, clean architecture, hexagonal architecture, DDD tactical patterns, modular monolith, MSA 중 무엇을 채택할지 묻는다.
 - 모듈 경계: 기능별 패키지, 계층별 패키지, bounded context, module API 공개 범위를 묻는다.
 - 의존성 방향: domain/application/adapter/infrastructure 간 허용 의존성과 금지 의존을 묻는다.
@@ -157,14 +159,25 @@ docs/architecture/
 - release readiness와 operational readiness 중 CI에서 실패 조건화할 수 있는 항목은 하네스 문서에 포함한다.
 - ADR, 심층 보안 리뷰, runbook 작성이 필요하면 후속 스킬 연계 항목으로 기록한다.
 
+## Repo 반영 규칙
+
+- 사용자 승인 후에만 repo 설정을 수정한다.
+- 직접 반영 범위는 `build.gradle`, `settings.gradle`, `.github/workflows/*`, 정적 분석/하네스 설정 파일, `src/test`의 아키텍처/하네스 검증 테스트, `Dockerfile`, `docker-compose*`, `infra`, `deploy`, `k8s`, `src/main/resources`의 아키텍처성 설정으로 제한한다.
+- 기능 구현, 도메인 정책 구현, controller/service/repository production 기능 코드는 작성하지 않는다.
+- 하네스 도입이 필요한 경우 ArchUnit, Spotless, PMD, SpotBugs/FindSecBugs, JaCoCo, dependency locking/verification, Testcontainers, Spring Security Test 같은 승인된 도구만 반영한다.
+- 새 의존성이나 CI 설정을 반영한 뒤 가능한 범위에서 `./gradlew test` 또는 해당 검증 명령을 실행하고 실패 원인을 문서에 기록한다.
+- 승인된 결정이 있지만 현재 환경에서 직접 반영할 수 없으면 `harness-guardrails.md` 또는 관련 아키텍처 문서의 후속 스킬 연계/미확정 사항에 차단 사유와 필요한 사용자 조치를 남긴다.
+
 ## 문서 반영 전 요약
 
 충분한 답변이 모이면 파일을 쓰기 전에 다음을 세션에서 요약하고 명확한 승인을 받는다.
 
 - 확정된 서버 아키텍처 결정
+- 확정된 기술 스택 결정
 - 확정된 인프라/CI/CD 결정
 - 확정된 AI 하네스/정적 분석 결정
 - 미확정 사항
 - 상위 산출물 재검토 필요 항목
 - 후속 스킬 연계 필요 항목
 - 생성 또는 갱신할 아키텍처 문서
+- 직접 수정할 repo 설정/검증 파일과 실행할 검증 명령

@@ -1,4 +1,4 @@
 interface:
   display_name: "Create TRD"
   short_description: "허브 TRD와 기능별 기술 문서 작성"
-  default_prompt: "Use $create-trd to create or update docs/trd.md, common technical documents, and feature-level TRDs from approved PRDs and architecture decisions."
+  default_prompt: "Use $create-trd to create or update docs/trd.md, common technical documents, and feature-level TRDs from existing PRDs and architecture decisions without choosing a new technology stack."

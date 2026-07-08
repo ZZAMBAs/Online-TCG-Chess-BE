@@ -36,7 +36,7 @@ python3 .codex/skills/tdd-green/scripts/find_issue.py auth-1 --root .
 5. RED 결과에 적힌 테스트 파일과 관련 `src/test/java`
 6. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket 관련 문서
 7. `docs/architecture/*`와 현재 `src/main`, `src/test` 구현 패턴
-8. FE/API 계약 영향을 확인하기 위한 `docs/spec/spec-fixed.md`, `docs/websocket-spec.md`, CORS/OpenAPI/JSON Schema/fixture 흔적
+8. FE/API 계약 영향을 확인하기 위한 `docs/spec/spec-fixed.md`, `docs/websocket-spec.md`, 이슈 frontmatter 또는 본문에 적힌 `docs/contracts/{topic}.md`, CORS/OpenAPI/JSON Schema/fixture 흔적
 9. `TDD GREEN 결과`를 기록하기 위한 `references/green-result-contract.md`
 
 PRD/TRD, RED 결과, 테스트 파일, 아키텍처 문서, 구현 대상 패키지를 확인할 수 없으면 추측하지 말고 사용자에게 확인을 요청한다. 아키텍처 문서가 없거나 미확정이면 production 구현을 작성하지 않는다.
@@ -77,7 +77,7 @@ PRD/TRD, RED 결과, 테스트 파일, 아키텍처 문서, 구현 대상 패키
 - production skeleton이 필요하면 테스트가 요구하는 public surface만 만든다.
 - 메서드 본문은 테스트 통과에 필요한 가장 작은 동작으로 제한한다.
 - 예외, 상태 불변성, 권한, REST/STOMP 오류 포맷은 AC와 RED 테스트가 요구하는 만큼만 구현한다.
-- FE/API 계약 테스트가 있으면 응답 형태, 이벤트 이름, 오류 포맷을 PRD/TRD/websocket 문서와 맞춘다.
+- FE/API 계약 테스트가 있으면 응답 형태, 이벤트 이름, 오류 포맷을 PRD/TRD/websocket/contracts 문서와 맞춘다. 관련 계약 문서가 `implementation_status: ready`가 아니면 구현을 추측하지 말고 `blocked`로 보고한다.
 - RED 테스트가 잘못된 요구를 검증한다고 판단되면 production을 억지로 맞추지 말고 `test-invalid`로 보고하고 사용자 확인을 요청한다.
 
 ## GREEN 절차

@@ -33,7 +33,7 @@ python3 .codex/skills/security-review/scripts/find_issue.py auth-1 --root .
 2. 현재 이슈의 `depends_on`, 직전 번호 이슈, `## 의존 관계`에 적힌 선행 이슈 문서
 3. 현재 이슈의 `## TDD RED 결과`와 `## TDD GREEN 결과`
 4. 현재 이슈 디렉터리의 `refactor-log.md`
-5. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket 관련 문서
+5. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket/contracts 관련 문서
 6. 보안 원천 요구사항 확인을 위한 `docs/spec/spec-fixed.md`
 7. 현재 `src/main`, `src/test`, `build.gradle`, 설정 파일, WebSocket/CORS/Security/Actuator 관련 구현
 8. 이번 이슈 변경 범위 확인을 위한 `git diff --name-only`, `git diff`, 필요 시 `git diff --cached`

@@ -28,6 +28,7 @@ github_url: null
 source_documents:
   - "docs/features/{feature}/prd.md"
   - "docs/features/{feature}/trd.md"
+contract_documents: []
 source_scenarios: []
 related_adrs: []
 depends_on: []
@@ -93,6 +94,7 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 - 단위 테스트:
 - 통합 테스트:
 - 계약/API 테스트: REST/STOMP가 사용자 또는 외부 호출자에게 보이는 결과이면 OpenAPI, JSON Schema, fixture, contract-test 필요 여부를 적는다.
+- FE/BE 계약 검증: 관련 `docs/contracts/{topic}.md`의 `implementation_status: ready` 여부와 이 이슈에서 반영할 계약 항목을 적는다.
 - 동시성/멱등성 테스트:
 - 정적 분석 또는 하네스 검사: 하네스가 없으면 기능 이슈에 묻지 말고 별도 선행 작업 또는 미확정 사항으로 분리한다.
 - 필요 시 수동 검증:
@@ -124,7 +126,7 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 
 ## 관련 문서
 
-- PRD/TRD/architecture/traceability 문서 경로와 관련 섹션을 적는다.
+- PRD/TRD/architecture/traceability/contracts 문서 경로와 관련 섹션을 적는다.
 
 ## 미확정 사항
 

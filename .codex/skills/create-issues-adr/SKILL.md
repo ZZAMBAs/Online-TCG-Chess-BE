@@ -1,19 +1,20 @@
 ---
 name: create-issues-adr
-description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 산출물을 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd와 create-trd 이후 issue 분리, Given-When-Then AC, TDD 가능한 구현 이슈, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
+description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architecture 산출물, 필요 시 확정된 docs/contracts/{topic}.md를 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd와 create-trd 이후 issue 분리, Given-When-Then AC, TDD 가능한 구현 이슈, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
 ---
 
 # Create Issues ADR
 
 ## 개요
 
-확정된 feature PRD/TRD를 구현 가능한 수직 슬라이스 이슈로 분해하고, 중요한 결정은 feature 단위 ADR로 남긴다. 로컬 이슈 ID는 `{feature}-{nnn}`이고 GitHub Issue 번호와 다르므로, 모든 상호 참조는 로컬 ID를 기준으로 유지한다.
+존재하는 feature PRD/TRD와 확정된 BE 구현 계약을 구현 가능한 수직 슬라이스 이슈로 분해하고, 중요한 결정은 feature 단위 ADR로 남긴다. 로컬 이슈 ID는 `{feature}-{nnn}`이고 GitHub Issue 번호와 다르므로, 모든 상호 참조는 로컬 ID를 기준으로 유지한다.
 
 ## 기본 원칙
 
 - 모든 질문, 분석, 문서, GitHub Issue 본문은 한국어로 작성한다.
 - `docs/spec/*`, `docs/prd.md`, `docs/trd.md`, `docs/features/{feature}/prd.md`, `docs/features/{feature}/trd.md`는 입력 문서로만 취급하고 수정하지 않는다.
-- PRD/TRD가 없거나 확정되지 않았으면 이슈 생성을 멈추고 먼저 `create-prd`와 `create-trd` 산출물 확정을 요청한다.
+- PRD/TRD 파일이 없으면 이슈 생성을 멈추고 먼저 `create-prd`와 `create-trd` 산출물 생성을 요청한다. 별도 승인 메타데이터는 요구하지 않고 파일 존재를 기본 게이트로 본다.
+- 외부 REST/STOMP, 인증/CSRF/cookie, 오류 포맷, 상태 동기화, projection, fixture처럼 FE/BE 협상 대상인 계약은 `docs/contracts/{topic}.md`의 `implementation_status: ready` 내용을 이슈 AC와 테스트 관점에 반영한다.
 - 기존 `docs/features/{feature}/issues/*`, `docs/features/{feature}/adr/*`, `docs/issue-map.md`, `docs/adr-index.md`가 있으면 먼저 읽고 중복 생성 대신 보완한다.
 - 로컬 문서를 원천 추적 기준으로 삼는다. GitHub Issue 생성은 사용자가 명시적으로 요청하고 승인한 경우에만 수행한다.
 - 이슈는 PRD 사용자 시나리오와 수용 기준을 구현 가능한 수직 슬라이스로 나눈다. 계층별 수평 작업만 나열하는 이슈는 만들지 않는다.
@@ -36,6 +37,7 @@ description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 
 
 - 공통 산출물: `docs/prd.md`, `docs/trd.md`, `docs/milestones.md`, `docs/traceability.md`, `docs/websocket-spec.md`
 - 기능 산출물: `docs/features/{feature}/prd.md`, `docs/features/{feature}/trd.md`
+- BE 구현 계약 산출물: `docs/contracts/*.md`
 - 아키텍처 산출물: `docs/architecture/*`
 - 기존 후속 산출물: `docs/features/{feature}/issues/*`, `docs/features/{feature}/adr/*`, `docs/issue-map.md`, `docs/adr-index.md`
 
@@ -44,7 +46,7 @@ description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 
 1. `{feature}` 인자가 있는지 확인하고 처리 범위를 확정한다.
 2. 입력 문서와 기존 후속 산출물을 읽는다.
 3. 가능하면 `scripts/scan_issue_ids.py --root .`를 실행해 기존 로컬 이슈 ID, ADR ID, GitHub Issue 연결 중복을 확인한다.
-4. feature별 사용자 시나리오, 서버 책임, 데이터/상태 경계, REST/STOMP 영향, 운영 요구, 테스트 가능성을 기준으로 이슈 후보를 도출한다.
+4. feature별 사용자 시나리오, 서버 책임, 데이터/상태 경계, REST/STOMP 영향, 관련 `docs/contracts/{topic}.md`, 운영 요구, 테스트 가능성을 기준으로 이슈 후보를 도출한다.
 5. ADR이 필요한 결정 후보를 별도로 도출한다.
 6. 사용자에게 feature별 issue map, 순차 의존 관계, 병렬 가능 이슈, ADR 후보를 제시하고 확정받는다.
 7. 확정된 범위에 따라 로컬 이슈 문서, ADR 문서, `docs/issue-map.md`, `docs/adr-index.md`를 생성하거나 갱신한다.
@@ -66,6 +68,8 @@ description: docs/spec/spec-fixed.md와 확정된 feature PRD/TRD, architecture 
 - 각 이슈의 `depends_on`은 참고 링크가 아니라 TDD 시작 전 실행 게이트다. 선행 이슈가 있으면 선행 이슈의 AC 충족, 테스트 통과, 후속 이슈가 기대하는 구현 surface를 명시한다.
 - 병렬 가능한 이슈만 `depends_on: []`으로 두고 본문 `## 의존 관계`에 독립 또는 병렬 가능 사유를 적는다.
 - 각 이슈에는 PRD의 관련 사용자 시나리오를 인용 또는 요약하고, 그 시나리오에서 AC를 도출한다.
+- 관련 `docs/contracts/{topic}.md`가 있으면 이슈 frontmatter와 `## 관련 문서`에 연결하고, BE가 지켜야 할 결정, REST/STOMP 계약, 인증/보안/노출 제한, 상태 동기화, 오류 포맷, fixture/drift 검증을 AC 또는 테스트 관점에 반영한다.
+- 관련 계약 문서가 필요하지만 없거나 `implementation_status: ready`가 아니면 구현 가능한 이슈처럼 확정하지 말고 미확정 사항 또는 선행 계약 동기화 작업으로 남긴다.
 - AC는 Given-When-Then 형식으로 작성하고 각 항목 앞에 `[정상]`, `[경계]`, `[예외]` 중 하나를 붙인다.
 - 정상 상황뿐 아니라 경계 조건과 예외 상황을 반드시 포함한다. PRD/TRD에 근거가 부족하면 "미확정 사항"으로 표시하고 사용자 확인이 필요하다고 적는다.
 - 각 이슈에는 TDD 진행 순서를 포함한다. 먼저 실패해야 할 테스트를 쓰고, 최소 구현, 리팩터링, 하네스/정적 분석 검증 순으로 적는다.

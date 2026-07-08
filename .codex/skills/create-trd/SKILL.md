@@ -1,20 +1,20 @@
 ---
 name: create-trd
-description: 확정된 docs/prd.md와 docs/features/{feature}/prd.md, docs/spec/spec-fixed.md, docs/architecture/*, 현재 구현·빌드 설정을 기준으로 전체 허브 TRD docs/trd.md, 전반적인 기술 문서 docs/websocket-spec.md와 docs/milestones.md 등 필요한 공통 기술 산출물, 기능별 TRD docs/features/{feature}/trd.md를 한국어로 생성·갱신해야 할 때 사용한다. 인자 없이 호출하면 전체 feature TRD 세트를 다루고, {feature} 인자가 있으면 해당 기능 TRD만 다룬다. PRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue, ADR 작성은 하지 않는다.
+description: 존재하는 docs/prd.md와 docs/features/{feature}/prd.md, docs/spec/spec-fixed.md, docs/architecture/*, 현재 구현·빌드 설정을 기준으로 전체 허브 TRD docs/trd.md, 전반적인 기술 문서 docs/websocket-spec.md와 docs/milestones.md 등 필요한 공통 기술 산출물, 기능별 TRD docs/features/{feature}/trd.md를 한국어로 생성·갱신해야 할 때 사용한다. 인자 없이 호출하면 전체 feature TRD 세트를 다루고, {feature} 인자가 있으면 해당 기능 TRD만 다룬다. 기술 스택이나 아키텍처를 새로 선택하지 않고, PRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue, ADR 작성은 하지 않는다.
 ---
 
 # Create TRD
 
 ## 개요
 
-확정된 PRD와 아키텍처 결정을 기준으로 허브 TRD, 공통 기술 문서, 기능별 TRD를 생성하거나 갱신한다. 제품 요구사항을 새로 확정하지 않고, 구현자가 테스트와 설계를 바로 도출할 수 있는 기술 요구사항으로 변환한다.
+존재하는 PRD와 아키텍처 결정을 기준으로 허브 TRD, 공통 기술 문서, 기능별 TRD를 생성하거나 갱신한다. 제품 요구사항, 기술 스택, 서버/인프라 아키텍처를 새로 확정하지 않고, 구현자가 테스트와 설계를 바로 도출할 수 있는 기술 요구사항으로 변환한다.
 
 ## 기본 원칙
 
 - 모든 질문, 분석, 문서 초안은 한국어로 작성한다.
 - 먼저 `docs/spec/spec-fixed.md`, `docs/prd.md`, 대상 기능의 `docs/features/{feature}/prd.md`를 읽는다.
 - 존재하는 `docs/architecture/*`, `build.gradle`, `settings.gradle`, `src/main`, `src/test`, `.github`, `Dockerfile`, `docker-compose*`, `infra`, `deploy`, `k8s`를 읽고 현재 기술 기준을 확인한다.
-- PRD가 없거나 확정되지 않았으면 진행하지 않고 먼저 PRD 확정을 요청한다.
+- 필요한 PRD 파일이 없으면 진행하지 않고 먼저 PRD 생성을 요청한다. 별도 승인 메타데이터는 요구하지 않고 파일 존재를 기본 게이트로 본다.
 - 아키텍처 결정이 필요한데 문서가 없거나 미확정이면 임의 확정하지 않고 `architecture-interview` 또는 `architecture-review` 필요 항목으로 남긴다.
 - `docs/spec/spec-fixed.md`, `docs/prd.md`, 기능별 PRD는 입력 문서로 취급하고 수정하지 않는다.
 - 요구사항 인터뷰, 스펙 리뷰, PRD 생성, issue 생성, ADR 작성은 하지 않는다.
@@ -47,7 +47,7 @@ description: 확정된 docs/prd.md와 docs/features/{feature}/prd.md, docs/spec/
 
 1. `{feature}` 인자가 있는지 확인하고 처리 범위를 확정한다.
 2. 입력 문서와 현재 구현/설정 파일을 읽는다.
-3. PRD 확정 여부와 아키텍처 결정 상태를 확인한다.
+3. 필요한 PRD 파일 존재와 아키텍처 결정 상태를 확인한다.
 4. 파일 작성 전에 처리 범위, 생성/갱신 대상 문서, 공통 기술 문서 필요 여부, 미확정 또는 재검토 필요 항목을 세션에서 제시하고 사용자 승인을 받는다.
 5. 인자가 없으면 `docs/trd.md`를 생성하거나 갱신하고 확정받은 뒤 공통 기술 문서와 기능별 TRD로 진행한다.
 6. 필요한 공통 기술 문서를 생성하거나 갱신한다.
@@ -71,6 +71,7 @@ description: 확정된 docs/prd.md와 docs/features/{feature}/prd.md, docs/spec/
 
 - 확정된 요구사항, 아키텍처 결정, 문서화 가정, 계약 후보, 미확정 사항을 구분한다.
 - 기능별 TRD는 해당 기능 PRD의 시나리오와 수용 기준을 기술 구현·테스트 관점으로 변환한다.
+- Java/Spring 버전, DB, 캐시, 메시징, 배포 단위, 하네스/정적 분석 도구 같은 기술 스택 선택은 아키텍처 산출물의 결정을 따른다. 필요한 결정이 없으면 TRD에서 새로 선택하지 않고 재검토 필요 항목으로 남긴다.
 - 서버 책임, 도메인 상태와 불변식, 데이터 저장, 명령/데이터 흐름, REST/STOMP 영향, 권한/검증, 동시성/멱등성, 오류 코드와 상태 불변성, 운영/관측 영향, 테스트 시나리오를 작성한다.
 - 실패 흐름에는 사용자에게 보이는 결과, 변경되면 안 되는 도메인 상태, 실패해도 저장될 수 있는 보안 로그/감사 로그/Rate Limit 카운터를 구분한다.
 - 원천 명세나 PRD에 없는 endpoint, payload, DB schema, 정책값은 임의 확정하지 않고 "계약 후보" 또는 "미확정 사항"으로 표시한다.

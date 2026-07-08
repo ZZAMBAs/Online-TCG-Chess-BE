@@ -33,7 +33,7 @@ python3 .codex/skills/tdd-blue/scripts/find_issue.py auth-1 --root .
 2. 현재 이슈의 `depends_on`, 직전 번호 이슈, `## 의존 관계`에 적힌 선행 이슈 문서
 3. 현재 이슈의 `## TDD RED 결과`와 `## TDD GREEN 결과`
 4. GREEN 결과 상태 의미를 확인하기 위한 `.codex/skills/tdd-green/references/green-result-contract.md`
-5. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket 관련 문서
+5. 이슈 frontmatter 또는 본문에 적힌 PRD/TRD/architecture/traceability/websocket/contracts 관련 문서
 6. `docs/architecture/*`와 현재 `src/main`, `src/test` 구현 패턴
 7. 리팩터링 체크리스트인 `references/refactor-checklist.md`
 8. 로그 기록 계약인 `references/refactor-log-contract.md`
@@ -71,7 +71,7 @@ PRD/TRD, GREEN 결과, 아키텍처 문서, 리팩터링 대상 파일을 확인
 
 - `references/refactor-checklist.md`를 기준으로 SOLID, 객체지향 책임, 중복, 네이밍, 컨벤션, 오버엔지니어링을 점검한다.
 - 테스트를 더 쉽게 통과시키기 위한 동작 변경은 하지 않는다.
-- public API, REST/STOMP 계약, 오류 포맷, persistence schema는 기존 AC와 GREEN 테스트가 보장하는 동작을 유지한다.
+- public API, REST/STOMP 계약, 오류 포맷, persistence schema는 기존 AC, GREEN 테스트, 관련 `docs/contracts/{topic}.md`가 보장하는 동작을 유지한다.
 - 구조 개선은 GREEN 변경을 이해하기 쉽게 만드는 최소 수준으로 제한한다.
 - 중복 제거가 오히려 추상화를 과하게 만들면 그대로 둔다.
 - 리팩터링 후보가 없으면 파일을 수정하지 말고 `blue-noop`로 기록한다.
