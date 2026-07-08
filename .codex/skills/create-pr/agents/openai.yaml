@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create PR"
+  short_description: "변경 검증 후 한국어 PR 초안 작성과 생성 절차"
+  default_prompt: "Use $create-pr to inspect current branch changes, run full tests, draft a Korean PR, and publish it after approval."
