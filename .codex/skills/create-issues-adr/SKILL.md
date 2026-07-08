@@ -1,13 +1,13 @@
 ---
 name: create-issues-adr
-description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architecture 산출물, 필요 시 확정된 docs/contracts/{topic}.md를 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd와 create-trd 이후 issue 분리, Given-When-Then AC, TDD 가능한 구현 이슈, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
+description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architecture 산출물, 필요 시 확정된 docs/contracts/{topic}.md를 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd와 create-trd 이후 issue 분리, Given-When-Then AC, TDD 가능한 테스트 시나리오/테스트 관점 도출, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
 ---
 
 # Create Issues ADR
 
 ## 개요
 
-존재하는 feature PRD/TRD와 확정된 BE 구현 계약을 구현 가능한 수직 슬라이스 이슈로 분해하고, 중요한 결정은 feature 단위 ADR로 남긴다. 로컬 이슈 ID는 `{feature}-{nnn}`이고 GitHub Issue 번호와 다르므로, 모든 상호 참조는 로컬 ID를 기준으로 유지한다.
+존재하는 feature PRD/TRD와 확정된 BE 구현 계약을 구현 가능한 수직 슬라이스 이슈로 분해하고, 각 이슈의 테스트 시나리오와 테스트 관점을 도출한다. 중요한 결정은 feature 단위 ADR로 남긴다. 로컬 이슈 ID는 `{feature}-{nnn}`이고 GitHub Issue 번호와 다르므로, 모든 상호 참조는 로컬 ID를 기준으로 유지한다.
 
 ## 기본 원칙
 
@@ -20,6 +20,7 @@ description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architectu
 - 이슈는 PRD 사용자 시나리오와 수용 기준을 구현 가능한 수직 슬라이스로 나눈다. 계층별 수평 작업만 나열하는 이슈는 만들지 않는다.
 - 같은 feature의 이슈는 기본적으로 낮은 번호부터 순차 진행한다. 후속 이슈는 이전 이슈의 AC 충족과 테스트 통과를 전제로 작성한다.
 - 각 수직 슬라이스 이슈는 TDD로 구현할 수 있어야 하며, 실패 테스트 작성에서 시작할 수 있을 만큼 AC와 테스트 관점을 구체화한다.
+- 테스트 시나리오 생성 책임은 이 스킬에 있다. 단, 새 제품 요구사항이나 정책값을 발명하지 않고 PRD/TRD/contracts/architecture에서 도출 가능한 테스트 관점만 이슈에 기록한다.
 - ADR은 단순 결론 문서가 아니다. 현재 프로젝트 상황, 비교 대안, 선택 이유, 선택 결과를 꼼꼼히 기록한다.
 - issue template 파일은 작성하지 않는다. GitHub Issue 본문에는 기존 `.github/ISSUE_TEMPLATE/feature-implementation.md`를 적용한다.
 
@@ -72,6 +73,7 @@ description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architectu
 - 관련 계약 문서가 필요하지만 없거나 `implementation_status: ready`가 아니면 구현 가능한 이슈처럼 확정하지 말고 미확정 사항 또는 선행 계약 동기화 작업으로 남긴다.
 - AC는 Given-When-Then 형식으로 작성하고 각 항목 앞에 `[정상]`, `[경계]`, `[예외]` 중 하나를 붙인다.
 - 정상 상황뿐 아니라 경계 조건과 예외 상황을 반드시 포함한다. PRD/TRD에 근거가 부족하면 "미확정 사항"으로 표시하고 사용자 확인이 필요하다고 적는다.
+- 각 이슈에는 `## 테스트 시나리오`를 작성해 `$tdd-red`가 새 시나리오를 만들지 않고 바로 테스트 코드로 옮길 수 있게 한다. 각 테스트 시나리오는 연결 AC, 테스트 종류, given/when/then, 관찰·검증할 결과, 필요한 fixture/하네스/계약 문서를 포함한다.
 - 각 이슈에는 TDD 진행 순서를 포함한다. 먼저 실패해야 할 테스트를 쓰고, 최소 구현, 리팩터링, 하네스/정적 분석 검증 순으로 적는다.
 - REST/STOMP가 사용자 또는 외부 호출자에게 보이는 결과이면 단위 테스트뿐 아니라 계약/API 테스트 관점을 포함한다. 하네스가 아직 없으면 기능 이슈에 묻지 말고 하네스 선행 작업 또는 `미확정 사항`으로 분리한다.
 - 수용 기준과 테스트는 PRD/TRD의 요구사항과 연결될 만큼 구체적으로 작성한다.

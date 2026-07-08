@@ -1,4 +1,4 @@
 interface:
   display_name: "Create Issues ADR"
-  short_description: "계약 반영 이슈, ADR, GitHub 연결"
-  default_prompt: "Use $create-issues-adr to split existing feature PRD/TRD and any ready BE contracts into vertical-slice issues, ADRs, and optional GitHub Issues."
+  short_description: "계약·테스트 시나리오 반영 이슈"
+  default_prompt: "Use $create-issues-adr to split existing feature PRD/TRD and any ready BE contracts into vertical-slice issues with AC, test scenarios, ADRs, and optional GitHub Issues."
