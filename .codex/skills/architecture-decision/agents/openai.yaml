@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Decision"
+  short_description: "인터뷰와 리뷰 루프로 아키텍처 확정본 문서를 작성"
+  default_prompt: "Use $architecture-decision to run the interview, review, bounded rework loops, and fixed architecture documentation workflow."
