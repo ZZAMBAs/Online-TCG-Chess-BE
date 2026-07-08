@@ -1,0 +1,4 @@
+interface:
+  display_name: "FE/BE Contract Negotiation"
+  short_description: "FE/BE 계약 협상 중재 워크플로우"
+  default_prompt: "Use $negotiate-fe-be-contract to mediate FE/BE contract negotiation one topic at a time and record resumable decisions."
