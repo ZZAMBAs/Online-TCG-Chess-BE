@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+staged_files="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [ -z "$staged_files" ]; then
+  exit 0
+fi
+
+compile_java=false
+compile_test_java=false
+has_build_change=false
+
+while IFS= read -r file; do
+  case "$file" in
+    build.gradle|settings.gradle|gradle/**|gradlew|gradlew.bat)
+      has_build_change=true
+      ;;
+    src/main/java/*.java|src/main/java/**/*.java)
+      compile_java=true
+      ;;
+    src/test/java/*.java|src/test/java/**/*.java)
+      compile_test_java=true
+      ;;
+  esac
+done <<< "$staged_files"
+
+if [ "$has_build_change" = true ]; then
+  compile_java=true
+  compile_test_java=true
+fi
+
+if [ "$compile_java" = false ] && [ "$compile_test_java" = false ]; then
+  exit 0
+fi
+
+unstaged_relevant_files=()
+while IFS= read -r file; do
+  case "$file" in
+    build.gradle|settings.gradle|gradle/**|gradlew|gradlew.bat|src/main/java/*.java|src/main/java/**/*.java|src/test/java/*.java|src/test/java/**/*.java)
+      if ! git diff --quiet -- "$file"; then
+        unstaged_relevant_files+=("$file")
+      fi
+      ;;
+  esac
+done <<< "$staged_files"
+
+if [ "${#unstaged_relevant_files[@]}" -gt 0 ]; then
+  echo "pre-commit: staged compile check cannot run reliably." >&2
+  echo "The following staged compile-related files also have unstaged changes:" >&2
+  printf '  - %s\n' "${unstaged_relevant_files[@]}" >&2
+  echo "Stage or discard those unstaged changes before committing." >&2
+  exit 1
+fi
+
+tasks=()
+if [ "$compile_java" = true ]; then
+  tasks+=("compileJava")
+fi
+if [ "$compile_test_java" = true ]; then
+  tasks+=("compileTestJava")
+fi
+
+echo "pre-commit: checking compile errors with ./gradlew ${tasks[*]}"
+./gradlew "${tasks[@]}"

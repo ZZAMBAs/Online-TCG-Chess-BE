@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+python3 - "$1" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+message_path = Path(sys.argv[1])
+raw_lines = message_path.read_text(encoding="utf-8").splitlines()
+lines = [line.rstrip() for line in raw_lines if not line.startswith("#")]
+
+while lines and lines[-1] == "":
+    lines.pop()
+
+if not lines:
+    print("commit-msg: empty commit message", file=sys.stderr)
+    sys.exit(1)
+
+title = lines[0]
+match = re.fullmatch(r"(feat|fix|docs|chore|refactor|style|test): (.+)", title)
+if not match:
+    print("commit-msg: title must match '{prefix}: {message}'", file=sys.stderr)
+    print("Allowed prefixes: feat, fix, docs, chore, refactor, style, test", file=sys.stderr)
+    sys.exit(1)
+
+summary = match.group(2)
+if len(title) > 50:
+    print("commit-msg: title must be 50 characters or fewer", file=sys.stderr)
+    print(f"Current title length: {len(title)}", file=sys.stderr)
+    sys.exit(1)
+
+if not summary.strip():
+    print("commit-msg: summary must not be empty", file=sys.stderr)
+    sys.exit(1)
+
+if summary.endswith((".", "!", "?", "다", "요", "니다", "한다", "했다", "함")):
+    print("commit-msg: summary should end as a concise noun phrase", file=sys.stderr)
+    sys.exit(1)
+
+if len(lines) == 1:
+    sys.exit(0)
+
+if len(lines) < 3 or lines[1] != "":
+    print("commit-msg: body must be separated from title by one blank line", file=sys.stderr)
+    sys.exit(1)
+
+for index, line in enumerate(lines[2:], start=3):
+    if not line:
+        continue
+    if not line.startswith("- "):
+        print(f"commit-msg: body line {index} must start with '- '", file=sys.stderr)
+        sys.exit(1)
+    body_text = line[2:].strip()
+    if not body_text:
+        print(f"commit-msg: body line {index} must not be empty", file=sys.stderr)
+        sys.exit(1)
+    if body_text.endswith((".", "!", "?", "다", "요", "니다", "한다", "했다", "함")):
+        print(f"commit-msg: body line {index} should end as a concise noun phrase", file=sys.stderr)
+        sys.exit(1)
+PY
