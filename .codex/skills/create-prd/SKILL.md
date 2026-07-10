@@ -35,7 +35,7 @@ description: docs/spec/spec-fixed.md를 원천 명세로 읽고 현재 요구사
 ## 진행 절차
 
 1. `docs/spec/spec-fixed.md` 전체를 읽는다.
-2. `scripts/extract_spec_sections.py --file docs/spec/spec-fixed.md --list`로 큰 번호 섹션 목록과 라인 번호를 확인한다.
+2. spec-review 스킬 내 `scripts/extract_spec_sections.py --file docs/spec/spec-fixed.md --list`로 큰 번호 섹션 목록과 라인 번호를 확인한다.
 3. `{feature}` 인자가 있는지 확인하고 처리 범위를 확정한다.
 4. 원천 섹션을 다음 기준으로 분류한다.
    - 허브 PRD에 반영할 전역 섹션: 개요, 문서 목적, 용어, MVP 범위, 전체 수용 기준, 확장 후보 등
