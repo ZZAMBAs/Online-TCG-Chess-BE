@@ -21,16 +21,16 @@
 | 11. 체스 룰 | 기능 | [`gameplay`](features/gameplay/prd.md) | 체스·승패·무승부 |
 | 12. 턴 진행 | 기능 | [`gameplay`](features/gameplay/prd.md) | 턴 단계·카드 행동 |
 | 13. 시간 규칙 | 기능 | [`gameplay`](features/gameplay/prd.md) | 타이머·재접속·시간패·몰수패 |
-| 14. 카드 시스템 | 기능 분해 | `gameplay`, `card-collection-deck` | 경기 중 효과와 카드 메타데이터·덱 분리 |
+| 14. 카드 시스템 | 기능 분해 | `gameplay`, `card-collection-deck`, `match-history` | 경기 중 효과와 카드 메타데이터·덱·카드 통계 분리 |
 | 15. 마나 시스템 | 기능 | [`gameplay`](features/gameplay/prd.md) | 획득·소비·상한 |
 | 16. 카드팩 및 컬렉션 | 기능 | [`card-collection-deck`](features/card-collection-deck/prd.md) | 카드팩·컬렉션·스타터 지급 |
-| 17. 전적 및 기보 | 기능 | [`match-history`](features/match-history/prd.md) | 결과·전적·기보 |
+| 17. 전적 및 기보 | 기능 | [`match-history`](features/match-history/prd.md) | 결과·전적·기보·종료 경기 통계 기준 |
 | 18. 대전 채팅 | 기능 | [`match-chat`](features/match-chat/prd.md) | 채팅·마스킹·차단 전달 |
 | 19. 커뮤니티 | 기능 | [`community`](features/community/prd.md) | 게시글 중심 커뮤니티 |
 | 20. 신고, 차단, 관리자 | 기능 | [`trust-safety-admin`](features/trust-safety-admin/prd.md) | 보호·신고·관리자·제재 |
 | 21. 마이페이지 및 설정 | 기능 분해 | [`identity-account`](features/identity-account/prd.md), [`match-history`](features/match-history/prd.md), [`card-collection-deck`](features/card-collection-deck/prd.md) | 사용자 자신의 집계·설정 허브 |
-| 22. 운영 및 보호 장치 | 공통 기술 경계 | 허브·관련 기능 PRD | Rate Limit·관측은 제품 기준만; 운영 구현은 기술 문서 |
-| 23. 데이터 저장 원칙 | 공통 기술 경계 | 허브·`gameplay`·`match-history`·`trust-safety-admin` | 보존·공개 범위만 반영; schema는 TRD |
+| 22. 운영 및 보호 장치 | 공통 기술 경계 | 허브·`gameplay`·`match-history`·`card-collection-deck` | 운영 메트릭과 card analytics의 제품 기준; 구현은 기술 문서 |
+| 23. 데이터 저장 원칙 | 공통 기술 경계 | 허브·`gameplay`·`match-history`·`card-collection-deck`·`trust-safety-admin` | 보존·공개 범위와 통계 기록 기준만 반영; schema는 TRD |
 | 24. 예외 및 엣지 케이스 | 기능 재배치 | 기능별 PRD 전체 | 관련 상태 경계에 재배치 |
 | 25. 핵심 수용 기준 | 기능 재배치 | 허브·기능별 PRD 전체 | 기능별 검증 가능한 기준으로 재배치 |
 | 26. 구현 전 필수 확정 사항과 MVP 확정 제약 | 허브·미확정 추적 | [`docs/prd.md`](prd.md), 관련 기능 PRD | 확정값과 후속 기술 문서 항목 분리 |
