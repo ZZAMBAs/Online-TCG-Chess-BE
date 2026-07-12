@@ -15,9 +15,11 @@ description: 존재하는 docs/prd.md와 docs/features/{feature}/prd.md, docs/sp
 - 먼저 `docs/spec/spec-fixed.md`, `docs/prd.md`, 대상 기능의 `docs/features/{feature}/prd.md`, 관련 `docs/contracts/*.md`를 읽는다.
 - 존재하는 `docs/architecture/*`, `build.gradle`, `settings.gradle`, `src/main`, `src/test`, `.github`, `Dockerfile`, `docker-compose*`, `infra`, `deploy`, `k8s`를 읽고 현재 기술 기준을 확인한다.
 - 필요한 PRD 파일이 없으면 진행하지 않고 먼저 PRD 생성을 요청한다. 별도 승인 메타데이터는 요구하지 않고 파일 존재를 기본 게이트로 본다.
+- 문서 작성 전 `python3 .codex/scripts/artifact-state.py verify prd`와 `python3 .codex/scripts/artifact-state.py verify architecture`를 실행한다. 실패하면 stale 산출물을 사용하지 않고 해당 생성 단계로 돌아간다.
 - 아키텍처 결정이 필요한데 문서가 없거나 미확정이면 임의 확정하지 않고 `architecture-interview` 또는 `architecture-review` 필요 항목으로 남긴다.
 - `implementation_status: ready`인 BE 계약은 REST/STOMP, 인증, 오류, 상태 동기화, fixture의 확정 입력으로 사용한다.
 - 외부 계약이 필요한 기능에서 관련 계약이 없거나 `implementation_status: blocked`이면 계약 내용을 추측하지 않고 `$negotiate-fe-be-contract`와 `$sync-be-contracts`의 선행 작업으로 남긴다.
+- `docs/contracts/*.md`가 있으면 `python3 .codex/scripts/artifact-state.py verify contracts`도 실행한다. 실패하면 계약 동기화부터 다시 수행한다.
 - `docs/spec/spec-fixed.md`, `docs/prd.md`, 기능별 PRD는 입력 문서로 취급하고 수정하지 않는다.
 - 요구사항 인터뷰, 스펙 리뷰, PRD 생성, issue 생성, ADR 작성은 하지 않는다.
 - `docs/trd.md`는 긴 상세 문서가 아니라 허브/요약/링크 문서로 작성한다.
@@ -56,7 +58,27 @@ description: 존재하는 docs/prd.md와 docs/features/{feature}/prd.md, docs/sp
 6. 필요한 공통 기술 문서를 생성하거나 갱신한다.
 7. 기능별 `docs/features/{feature}/trd.md`를 하나씩 생성하거나 갱신한다. 각 문서 초안 작성 후 확정 여부를 묻고, 확정 전에는 후속 문서의 기준으로 삼지 않는다.
 8. 필요하면 `docs/traceability.md`에 PRD, TRD, 아키텍처, BE 계약, 공통 기술 문서의 연결을 보강한다.
-9. 작성 후에는 생성/수정한 파일, 처리한 feature 목록, 남은 모호함, 재검토 필요 항목, 승인 완료된 문서 목록을 간단히 보고한다.
+9. 아래 명령으로 TRD 산출물의 출처 상태를 기록한다.
+
+```bash
+python3 .codex/scripts/artifact-state.py record trd \
+  --input docs/spec/spec-fixed.md \
+  --input docs/prd.md \
+  --input docs/traceability.md \
+  --input-glob 'docs/features/*/prd.md' \
+  --input-glob 'docs/architecture/*.md' \
+  --input-glob 'docs/architecture/fixed-*/*.md' \
+  --input-glob 'docs/contracts/*.md' \
+  --output docs/trd.md \
+  --output docs/traceability.md \
+  --output docs/milestones.md \
+  --output docs/websocket-spec.md \
+  --output-glob 'docs/features/*/trd.md'
+```
+
+외부 계약이 없는 프로젝트에서는 `--input-glob 'docs/contracts/*.md'`를 생략한다.
+
+10. 작성 후에는 생성/수정한 파일, 처리한 feature 목록, 남은 모호함, 재검토 필요 항목, 승인 완료된 문서 목록을 간단히 보고한다.
 
 ## 공통 기술 문서 기준
 
@@ -183,5 +205,6 @@ destination, payload, 이벤트 필드는 원천 명세, 아키텍처, ready BE 
 - `docs/trd.md`는 허브 문서이고, 상세 기술 요구사항은 기능별 TRD와 공통 기술 문서에 위치한다.
 - `docs/websocket-spec.md`가 필요한 경우 필수 섹션을 포함하고, 원천 명세와 확정 문서에 없는 실시간 계약을 확정값처럼 쓰지 않는다.
 - 관련 `docs/contracts/*.md`를 읽고 ready 계약을 반영했으며, blocked 또는 누락 계약을 확정값처럼 쓰지 않았다.
+- `.codex/artifact-state.json`의 `prd`, `architecture`, 필요 시 `contracts` 검증을 통과하고 `trd` 상태를 기록했다.
 - 각 기능별 TRD에 실패 시 상태 불변성, 동시성/멱등성, 오류 코드, 테스트 시나리오가 있다.
 - 아키텍처 결정이 필요한 미확정 사항은 임의 확정하지 않고 재검토 필요 항목으로 남겼다.

@@ -47,7 +47,17 @@ description: docs/spec/spec-fixed.md를 원천 명세로 읽고 현재 요구사
 8. 인자가 없으면 `docs/prd.md`를 생성하거나 갱신하고 확정받은 뒤 기능별 PRD로 진행한다.
 9. 기능별 `docs/features/{feature}/prd.md`를 하나씩 생성하거나 갱신한다. 각 문서 초안 작성 후 확정 여부를 묻고, 확정 전에는 후속 문서의 기준으로 삼지 않는다.
 10. 필요하면 `docs/traceability.md`에 원천 섹션과 PRD 산출물의 연결을 생성하거나 보강한다.
-11. 작성 후에는 생성/수정한 파일, 도출한 feature 목록, 남은 모호함, 원천 섹션 추적 방식, 승인 완료된 문서 목록을 간단히 보고한다.
+11. 아래 명령으로 현재 PRD 산출물의 출처 상태를 기록한다.
+
+```bash
+python3 .codex/scripts/artifact-state.py record prd \
+  --input docs/spec/spec-fixed.md \
+  --output docs/prd.md \
+  --output docs/traceability.md \
+  --output-glob 'docs/features/*/prd.md'
+```
+
+12. 작성 후에는 생성/수정한 파일, 도출한 feature 목록, 남은 모호함, 원천 섹션 추적 방식, 승인 완료된 문서 목록을 간단히 보고한다.
 
 ## Feature 도출 기준
 
@@ -154,3 +164,4 @@ docs/features/{feature}/adr/
 - 각 기능별 PRD에 최소 2개 이상의 상세 사용자 시나리오가 있다.
 - 각 기능별 PRD에 상태/권한별 엣지 케이스, 사용자에게 보이는 결과, 수용 기준, 미확정 사항이 있다.
 - 원천 명세의 예외와 수용 기준이 허브 PRD에만 머물지 않고 관련 기능별 PRD에 재배치되어 있다.
+- `.codex/artifact-state.json`의 `prd`가 현재 `spec-fixed.md`와 PRD 산출물 fingerprint를 기록한다.

@@ -18,6 +18,7 @@ description: Online-TCG-Chess-BE에서 FE/BE 협의가 끝난 docs/negotiation/{
 - 원본 경로, source_artifacts, supersedes, 협상 과정, 사용자 결정 이력은 복사하지 않는다.
 - `summarize.md`가 `fixed`가 아니면 구현 가능한 계약처럼 정리하지 않는다.
 - production code, test code, PRD/TRD, architecture, `docs/negotiation` 원문은 수정하지 않는다.
+- 계약 동기화가 끝나면 `docs/negotiation/*/summarize.md`와 `docs/contracts/*.md`의 fingerprint를 기록한다.
 
 ## 입력 범위
 
@@ -104,6 +105,18 @@ docs/contracts/
 - 이전 파일에 있었지만 현재 fixed 요약에서 사라진 계약은 제거한다.
 - 확정 요약에도 BE 구현에 필요한 핵심값이 없으면 추측하지 말고 `구현 차단 사항`에 질문으로 남긴다.
 - 같은 내용을 여러 섹션에 장황하게 중복하지 않는다.
+
+## 출처 상태 기록
+
+계약 파일을 하나 이상 생성하거나 갱신한 뒤 아래 명령을 실행한다.
+
+```bash
+python3 .codex/scripts/artifact-state.py record contracts \
+  --input-glob 'docs/negotiation/*/summarize.md' \
+  --output-glob 'docs/contracts/*.md'
+```
+
+이 기록은 협상 원문을 계약 문서에 복사하지 않으며, 이후 TRD와 이슈 생성 단계에서 stale 계약을 자동 차단하는 용도로만 사용한다.
 
 ## 금지 사항
 

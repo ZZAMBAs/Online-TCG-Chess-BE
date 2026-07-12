@@ -76,6 +76,7 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 - CI: `.github/workflows/backend-ci.yml`
 - 구조 검사: `src/test/java/org/zzambas/tcgonlinechessbe/architecture/ArchitectureTest.java`
 - 하네스 규칙: `docs/architecture/harness-guardrails.md`와 현재 `harness-fixed.md`
+- 산출물 최신성: `.codex/artifact-state.json`, `.codex/scripts/artifact-state.py`
 - 스킬 계약: `.codex/skills/*/SKILL.md`
 - 에이전트 역할: `.codex/agents/`
 
@@ -86,6 +87,7 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 - 시작 전 `git status --short`로 기존 변경을 확인하고 관련 없는 변경을 되돌리지 않는다.
 - 구현 범위와 AC는 현재 이슈 문서를 기준으로 제한한다.
 - 외부 계약이 필요한 이슈는 `docs/contracts/`의 확정 상태를 먼저 확인한다.
+- 하위 산출물을 만들기 전 출처 상태를 검증하고, stale이면 해당 산출물을 다시 생성한 뒤 상태를 기록한다.
 - `$tdd-workflow`의 RED, GREEN, BLUE, 보안 검토와 AC 검증 순서를 따른다.
 - 요구사항, 계약 또는 아키텍처 충돌은 코드를 맞추기 전에 상위 단계에서 해결한다.
 - 커밋은 `$git-commit`으로 응집된 작업 단위별로 기록한다.

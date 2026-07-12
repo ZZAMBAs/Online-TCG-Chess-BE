@@ -1,0 +1,44 @@
+{
+  "artifacts": {
+    "architecture": {
+      "inputs": {
+        "docs/prd.md": "fcb98cc3bc3cbbce05780b64c836e8dd2c79ee19e24adcf346845cd15b1cdacb",
+        "docs/spec/spec-fixed.md": "d0309e904f6c28f2c0f5fb97e4a2d36b0337e262ac85f080fa4de699eae02b4d",
+        "docs/traceability.md": "613f590af9c457fb8f8dbcae6bbb0c138f86e3bc7b1a9f5af032b08d94aa2c4f"
+      },
+      "outputs": {
+        "docs/architecture/architecture-review-ledger.md": "adc8b274dedd5334f9c5735b8dd0d5f5ce683d46810567127ae9e1abea0a91c3",
+        "docs/architecture/architecture-traceability.md": "570e3a2a70dbbea4bbb695deee9cb1784b62e883554a7009917858af9e2e8b6c",
+        "docs/architecture/cicd-architecture.md": "3327e0996d198d57655b72de992753dbbdb78faedd90dcd6690835717ee2621a",
+        "docs/architecture/current-fixed.md": "118851370015aa9602de283a758c1a29bf16451979b6697e464f3d38a051767a",
+        "docs/architecture/deployment-view.md": "543b1e1dbd7b9b5326db70e8126fd3aacf5f452f7c04a79d0c07fc578d59e659",
+        "docs/architecture/fixed-20260710/harness-fixed.md": "a1ca5a720912edba74d39177b3a9ee51f6c43c98003b06b764c6268cb0aa6a77",
+        "docs/architecture/fixed-20260710/impl-fixed.md": "44a337224f7b0a6ca0e6bc582923674a9e137c7ac755e5c964ee387866a0c7c1",
+        "docs/architecture/fixed-20260710/infra-fixed.md": "738f01e19cbab3903d9c87f2a6e3adf15f4bb3ea9992b385833d5d9929c95cee",
+        "docs/architecture/harness-guardrails.md": "f641043e5c8b6a2b19b55a7c3c2e1bccedb1fa00f46ce357c1f39e88975fc2da",
+        "docs/architecture/infrastructure-architecture.md": "ab63af9c695d073d1a77d556ad3e0880d271c2b6f3011d0395cbde2b4d550fa2",
+        "docs/architecture/server-architecture.md": "845127b9589eb454b08df2b07a8310674c1e13d26ef48cad0a6fbcce081d084e"
+      },
+      "status": "current"
+    },
+    "prd": {
+      "inputs": {
+        "docs/spec/spec-fixed.md": "d0309e904f6c28f2c0f5fb97e4a2d36b0337e262ac85f080fa4de699eae02b4d"
+      },
+      "outputs": {
+        "docs/features/card-collection-deck/prd.md": "c49915f419857847573ca12353c5419b762faa2c63240b4c1142351a14357ef3",
+        "docs/features/community/prd.md": "de0e8ae30f62e9dc7e8b6906a057aa14b9a5155c2f34e5762338e5706f5d9687",
+        "docs/features/gameplay/prd.md": "d681c844ee6270a793e2d97a0155fcdabed1d8e61aeedc69b37bb04e43c6b2d1",
+        "docs/features/identity-account/prd.md": "515360e592ddfe8695c7a5b956429cbb67d8fdfb426f07a715a80233007c6e6a",
+        "docs/features/match-chat/prd.md": "0cc40d423f1ebe0dfcb1d1cba6f8a7e3ef111202765dc9e537068fd819bd78c3",
+        "docs/features/match-history/prd.md": "7e8e0639feb3ecf88b89199b48d1b779f1dab16143ce0e0ca4d9285f28d6df35",
+        "docs/features/matchmaking/prd.md": "b11a29c26e2fcf9369afe11a42a27fab132cab7380a6cbf91c8424ac150e9b18",
+        "docs/features/trust-safety-admin/prd.md": "dc21f9cd11d35730f2a4ea92db76f40003a9ba6c877072360db030d29feab3d9",
+        "docs/prd.md": "fcb98cc3bc3cbbce05780b64c836e8dd2c79ee19e24adcf346845cd15b1cdacb",
+        "docs/traceability.md": "613f590af9c457fb8f8dbcae6bbb0c138f86e3bc7b1a9f5af032b08d94aa2c4f"
+      },
+      "status": "current"
+    }
+  },
+  "version": 1
+}

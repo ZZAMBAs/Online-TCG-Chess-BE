@@ -13,7 +13,8 @@ description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architectu
 
 - 모든 질문, 분석, 문서, GitHub Issue 본문은 한국어로 작성한다.
 - `docs/spec/*`, `docs/prd.md`, `docs/trd.md`, `docs/features/{feature}/prd.md`, `docs/features/{feature}/trd.md`는 입력 문서로만 취급하고 수정하지 않는다.
-- PRD/TRD 파일이 없으면 이슈 생성을 멈추고 먼저 `create-prd`와 `create-trd` 산출물 생성을 요청한다. 별도 승인 메타데이터는 요구하지 않고 파일 존재를 기본 게이트로 본다.
+- PRD/TRD 파일이 없거나 `python3 .codex/scripts/artifact-state.py verify prd`, `verify architecture`, `verify trd`가 실패하면 이슈 생성을 멈추고 해당 산출물 생성 또는 갱신을 요청한다.
+- `docs/contracts/*.md`가 있으면 이슈 생성 전에 `python3 .codex/scripts/artifact-state.py verify contracts`를 실행한다.
 - 외부 REST/STOMP, 인증/CSRF/cookie, 오류 포맷, 상태 동기화, projection, fixture처럼 FE/BE 협상 대상인 계약은 `docs/contracts/{topic}.md`의 `implementation_status: ready` 내용을 이슈 AC와 테스트 관점에 반영한다.
 - 기존 `docs/features/{feature}/issues/*`, `docs/features/{feature}/adr/*`, `docs/issue-map.md`, `docs/adr-index.md`가 있으면 먼저 읽고 중복 생성 대신 보완한다.
 - 로컬 문서를 원천 추적 기준으로 삼는다. GitHub Issue 생성은 사용자가 명시적으로 요청하고 승인한 경우에만 수행한다.
@@ -52,8 +53,29 @@ description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architectu
 6. 사용자에게 feature별 issue map, 순차 의존 관계, 병렬 가능 이슈, ADR 후보를 제시하고 확정받는다.
 7. 확정된 범위에 따라 로컬 이슈 문서, ADR 문서, `docs/issue-map.md`, `docs/adr-index.md`를 생성하거나 갱신한다.
 8. 각 feature의 로컬 이슈/ADR 초안을 요약하고 사용자 확정을 받는다.
-9. GitHub Issue 생성 요청이 있으면 `references/github-issue-policy.md`를 읽고 승인 게이트를 진행한다.
-10. 최종적으로 생성/수정 파일, GitHub Issue 연결 여부, 남은 미확정 사항을 보고한다.
+9. 아래 명령으로 생성한 이슈/ADR 산출물의 출처 상태를 기록한다.
+
+```bash
+python3 .codex/scripts/artifact-state.py record issues-{feature} \
+  --input docs/spec/spec-fixed.md \
+  --input docs/prd.md \
+  --input docs/trd.md \
+  --input docs/traceability.md \
+  --input docs/features/{feature}/prd.md \
+  --input docs/features/{feature}/trd.md \
+  --input-glob 'docs/architecture/*.md' \
+  --input-glob 'docs/architecture/fixed-*/*.md' \
+  --input-glob 'docs/contracts/*.md' \
+  --output-glob 'docs/features/{feature}/issues/*/issue.md' \
+  --output-glob 'docs/features/{feature}/adr/*.md' \
+  --output docs/issue-map.md \
+  --output docs/adr-index.md
+```
+
+외부 계약이 없는 프로젝트에서는 `--input-glob 'docs/contracts/*.md'`를 생략한다.
+
+10. GitHub Issue 생성 요청이 있으면 `references/github-issue-policy.md`를 읽고 승인 게이트를 진행한다.
+11. 최종적으로 생성/수정 파일, GitHub Issue 연결 여부, 남은 미확정 사항을 보고한다.
 
 ## 이슈 작성 규칙
 

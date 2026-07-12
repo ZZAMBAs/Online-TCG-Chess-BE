@@ -87,6 +87,19 @@ docs/architecture/
    - 미해결 차단 이슈가 있으면 `status: partial` 또는 `status: blocked`로 표시하고, 확정본으로 오인될 표현을 피한다.
    - 차단 이슈가 없으면 `status: fixed`로 표시한다.
 
+8. 아키텍처 산출물의 출처 상태를 기록한다.
+
+```bash
+python3 .codex/scripts/artifact-state.py record architecture \
+  --input docs/spec/spec-fixed.md \
+  --input docs/prd.md \
+  --input docs/traceability.md \
+  --output-glob 'docs/architecture/*.md' \
+  --output-glob 'docs/architecture/fixed-*/*.md'
+```
+
+`docs/prd.md` 또는 `docs/traceability.md`가 아직 없는 경우에는 기록하지 않고, 다음 아키텍처 결정 전에 PRD 생성부터 요청한다.
+
 ## 리뷰 루프 기록 형식
 
 각 `review-loop-{nn}.md`는 다음 구조를 유지한다.
