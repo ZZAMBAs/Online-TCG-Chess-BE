@@ -22,6 +22,7 @@ id: "{feature}-{nnn}"
 feature: "{feature}"
 title: "{title}"
 status: "draft"
+verification_status: "pending"
 slice_type: "vertical"
 github_issue: null
 github_url: null
@@ -102,6 +103,12 @@ AC는 PRD 사용자 시나리오에서 도출하고 Given-When-Then으로 작성
 4. `[경계]` AC를 통과하도록 상태 검증, 제한, 동시성, 멱등성 조건을 보강한다.
 5. `[예외]` AC를 통과하도록 오류 응답과 상태 불변성을 보장한다.
 6. 리팩터링 후 정적 분석, 아키텍처 규칙, 테스트 하네스 검사를 실행한다.
+
+## 이슈 검증
+
+- 검증 상태: frontmatter의 `verification_status`
+- 검증 보고서: `docs/features/{feature}/issues/issue-verification.md`
+- `passed`가 아니면 TDD를 시작하지 않는다.
 
 ## 테스트
 

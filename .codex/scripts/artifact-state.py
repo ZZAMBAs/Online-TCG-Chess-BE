@@ -24,7 +24,9 @@ def normalize(root: Path, value: str) -> Path:
     return path
 
 
-def collect(root: Path, paths: list[str], globs: list[str]) -> dict[str, str]:
+def collect(
+    root: Path, paths: list[str], globs: list[str], optional_globs: list[str]
+) -> dict[str, str]:
     collected: dict[str, str] = {}
     for value in paths:
         path = normalize(root, value)
@@ -36,6 +38,10 @@ def collect(root: Path, paths: list[str], globs: list[str]) -> dict[str, str]:
         if not matches:
             raise ValueError(f"glob matched no files: {pattern}")
         for path in matches:
+            if path.is_file():
+                collected[path.relative_to(root).as_posix()] = digest(path)
+    for pattern in optional_globs:
+        for path in sorted(root.glob(pattern)):
             if path.is_file():
                 collected[path.relative_to(root).as_posix()] = digest(path)
     return dict(sorted(collected.items()))
@@ -64,8 +70,8 @@ def verify_files(root: Path, label: str, expected: dict[str, str]) -> list[str]:
 
 
 def record(args: argparse.Namespace, root: Path, state_path: Path) -> int:
-    inputs = collect(root, args.input, args.input_glob)
-    outputs = collect(root, args.output, args.output_glob)
+    inputs = collect(root, args.input, args.input_glob, args.optional_input_glob)
+    outputs = collect(root, args.output, args.output_glob, args.optional_output_glob)
     state = load_state(state_path)
     state["artifacts"][args.artifact] = {
         "status": "current",
@@ -103,8 +109,10 @@ def parse_args() -> argparse.Namespace:
     record_parser.add_argument("artifact")
     record_parser.add_argument("--input", action="append", default=[])
     record_parser.add_argument("--input-glob", action="append", default=[])
+    record_parser.add_argument("--optional-input-glob", action="append", default=[])
     record_parser.add_argument("--output", action="append", default=[])
     record_parser.add_argument("--output-glob", action="append", default=[])
+    record_parser.add_argument("--optional-output-glob", action="append", default=[])
 
     verify_parser = subparsers.add_parser("verify")
     verify_parser.add_argument("artifact")

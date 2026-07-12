@@ -68,15 +68,13 @@ python3 .codex/scripts/artifact-state.py record trd \
   --input-glob 'docs/features/*/prd.md' \
   --input-glob 'docs/architecture/*.md' \
   --input-glob 'docs/architecture/fixed-*/*.md' \
-  --input-glob 'docs/contracts/*.md' \
+  --optional-input-glob 'docs/contracts/*.md' \
   --output docs/trd.md \
   --output docs/traceability.md \
   --output docs/milestones.md \
   --output docs/websocket-spec.md \
   --output-glob 'docs/features/*/trd.md'
 ```
-
-외부 계약이 없는 프로젝트에서는 `--input-glob 'docs/contracts/*.md'`를 생략한다.
 
 10. 작성 후에는 생성/수정한 파일, 처리한 feature 목록, 남은 모호함, 재검토 필요 항목, 승인 완료된 문서 목록을 간단히 보고한다.
 
