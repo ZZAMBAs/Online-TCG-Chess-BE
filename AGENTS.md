@@ -16,7 +16,7 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 
 - 요구사항 변경은 인터뷰와 리뷰를 거친다.
 - 아키텍처 선택 또는 확정 사항 변경은 `$architecture-decision`으로 재검토한다.
-- FE 공유 계약은 협상 후 BE 계약 문서로 동기화한다.
+- FE 공유 계약은 REST·STOMP·인증·오류·상태 동기화·projection·fixture 등 전체 협상 topic이 `fixed`이고 `docs/negotiation/session.md`가 `completed`가 된 뒤에만 BE 계약 문서로 동기화한다. topic별 부분 sync는 하지 않는다.
 - TRD 작성 후 이슈와 ADR을 만들고, 선행 조건이 충족된 이슈만 구현한다.
 - `$tdd-workflow` 완료와 전체 검증 후 PR을 생성한다.
 - 유효한 상위 산출물이 있으면 불필요하게 이전 단계를 반복하지 않는다.

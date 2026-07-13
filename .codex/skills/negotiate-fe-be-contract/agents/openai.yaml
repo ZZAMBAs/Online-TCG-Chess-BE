@@ -1,4 +1,4 @@
 interface:
   display_name: "FE/BE Contract Negotiation"
-  short_description: "FE/BE 계약 협상 중재 워크플로우"
-  default_prompt: "Use $negotiate-fe-be-contract to mediate FE/BE contract negotiation one topic at a time and record resumable decisions."
+  short_description: "전체 FE/BE 계약 협상과 커버리지 완료 검증"
+  default_prompt: "Use $negotiate-fe-be-contract to finish every FE/BE contract topic, verify full coverage, and mark the negotiation session completed before sync."
