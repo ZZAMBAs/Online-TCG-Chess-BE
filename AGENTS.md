@@ -37,6 +37,7 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 - `docs/architecture/fixed-*/`: 구현, 인프라, CI/CD, 하네스 확정본
 - `docs/architecture/interview-*/`: 결정 과정과 승인 기록
 - `docs/architecture/*.md`: 서버 구조, 인프라, 배포, CI/CD, 하네스, 추적성과 리뷰 기록
+- `docs/architecture/adr/`, `docs/architecture/adr-index.md`: 서버 구조·인프라·CI/CD·하네스 선택지의 채택·제외 이유와 대체 관계
 
 클라우드 제공자, 자동 배포, 분산 시스템, 트래픽 목표, 비용 상한, SLO 등 미확정 사항이 필요해지면 임의 결정하지 않고 `$architecture-decision`을 다시 수행한다.
 
