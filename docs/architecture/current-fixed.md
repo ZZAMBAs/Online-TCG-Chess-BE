@@ -4,7 +4,7 @@
 current_fixed: fixed-20260714
 interview_source: interview-20260714
 updated_at: 2026-07-14
-scope: server structure, persistence, card catalog versioning and activation, security, infrastructure boundary, CI and harness
+scope: server structure, persistence, card and card-pack catalog versioning and activation, security, infrastructure boundary, CI and harness
 status: fixed
 ```
 

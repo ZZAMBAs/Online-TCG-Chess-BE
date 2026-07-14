@@ -7,10 +7,12 @@
 - `fixed-20260710/harness-fixed.md`의 `./gradlew spotlessCheck test`, Spotless, ArchUnit과 GitHub Actions required check를 유지한다.
 - 카드 catalog 검증 task가 구현되는 즉시 구조, 식별자·버전 중복, 활성 버전 참조와 같은 버전 불변성 검증을 Hard gate로 전환한다.
 - fixed FE/BE 카드 계약과 effect registry가 구현되는 즉시 활성화·롤백 가능한 모든 버전의 정의·효과 처리·선택·공개 결과·fixture 완결성 검증을 Hard gate로 전환한다.
+- 카드팩 catalog validator가 구현되는 즉시 schema, 식별자·버전 중복, 활성 manifest 참조, 카드 식별자·종류 참조, fingerprint와 동일 버전 불변성 검증을 Hard gate로 전환한다.
 
 ### Conditional Gate
 
 - 카드 persistence 구현 시 Testcontainers MySQL로 새 버전 추가, 같은 버전 충돌 시 기동 실패, 활성 버전 전환과 경기별 버전 고정을 검증한다.
+- 카드팩 persistence 구현 시 같은 Testcontainers MySQL 경계에서 새 팩 버전 추가, 동일 버전 충돌 기동 실패와 배포 manifest 기반 활성 전환을 검증한다.
 - 기존 PMD, SpotBugs/FindSecBugs, JaCoCo, dependency locking/verification, Spring Security Test와 OpenAPI/STOMP contract test의 Conditional 분류를 유지한다.
 
 ### Advisory
@@ -25,7 +27,7 @@
 
 ## 미확정 또는 상위 산출물 재검토
 
-- 카드 catalog validator와 effect registry의 상세 구현
+- 카드·카드팩 catalog validator와 effect registry의 상세 구현
 - fixed 계약 fixture의 FE 공유 방식
 - provider/CD 기반 배포·rollback·post-deploy gate
 

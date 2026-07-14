@@ -17,5 +17,7 @@
 | GameEvent 기반 card analytics read model | spec/interview | 주요 메트릭·저장 원칙 | `server-architecture.md`, `infrastructure-architecture.md` | 확정 |
 | `docs/cards` 작성·배포 원천 + RDB 불변 버전 동기화 | spec/prd/interview | 카드 식별자·버전 불변성과 경기별 고정 | `server-architecture.md`, `infrastructure-architecture.md`, `cicd-architecture.md`, `fixed-20260714/impl-fixed.md` | 확정 |
 | 카드별 활성 버전 + 신규 경기 pinning | gameplay/card PRD/interview | 활성 버전만 신규 경기 적용, 기존 경기·기보 유지 | `server-architecture.md`, `harness-guardrails.md`, `fixed-20260714/harness-fixed.md` | 확정 |
+| `docs/card-packs` 작성·배포 원천 + RDB 불변 버전 동기화 | card-collection-deck PRD/interview | 카드팩 확률 버전 식별·감사, 관리자 편집 제외 | `server-architecture.md`, `infrastructure-architecture.md`, `cicd-architecture.md`, `fixed-20260714/impl-fixed.md` | 확정 |
+| 카드팩 활성 manifest + 배포 기반 전환 | architecture interview | 팩 master 작성·실행 원천 분리 | `deployment-view.md`, `harness-guardrails.md`, `fixed-20260714/harness-fixed.md` | 확정 |
 | 클라우드 제공자와 CD | interview | 운영 미확정 | `infrastructure-architecture.md`, `cicd-architecture.md` | 재인터뷰 |
 | RPO/RTO/SLO/비용/트래픽 목표 | interview | 운영 미확정 | `infrastructure-architecture.md` | spec 재검토 |
