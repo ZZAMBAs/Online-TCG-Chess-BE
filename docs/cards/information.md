@@ -67,6 +67,27 @@
 
 `count`는 선택할 대상 수다.
 카드 사용 시 클라이언트가 추가 입력을 제출해야 하면 `parameters`에 입력 이름, 타입, 허용값, 필수 여부를 기록한다.
+기물과 도착 칸을 함께 선택하는 카드는 `parameters.destination`을 `BOARD_SQUARE` 타입으로 기록한다.
+여러 대상을 선택하는 카드가 중복을 허용하지 않으면 `distinct: true`, 선택 순서에 의미가 없으면 `ordered: false`를 기록한다.
+
+## 방향과 보드 orientation
+
+카드 방향은 FE 화면의 회전 상태가 아니라 카드 사용자 진영 기준으로 해석한다.
+서버 상태, 후보, 명령 결과와 기보의 칸 좌표는 항상 canonical `a1`~`h8`를 사용한다.
+live FE는 자신의 home rank가 화면 아래쪽에 보이도록 표시하지만 presentation orientation으로 canonical 좌표를 변경하지 않는다.
+
+허용 방향 enum과 file/rank 변화량은 다음과 같다.
+
+| 방향 | 백 | 흑 |
+| --- | --- | --- |
+| `LEFT` | `(-1, 0)` | `(+1, 0)` |
+| `RIGHT` | `(+1, 0)` | `(-1, 0)` |
+| `FORWARD` | `(0, +1)` | `(0, -1)` |
+| `FORWARD_LEFT` | `(-1, +1)` | `(+1, -1)` |
+| `FORWARD_RIGHT` | `(+1, +1)` | `(-1, -1)` |
+
+`UP_LEFT`, `UP_RIGHT`는 사용하지 않는다.
+서버는 경기 상태에서 확인한 카드 사용자의 색상으로 방향을 계산하고 client가 보낸 색상이나 board perspective를 신뢰하지 않는다.
 
 ## `effect` 형식
 
@@ -83,16 +104,17 @@
 | 필드 | 타입 | 설명 |
 | --- | --- | --- |
 | `piece` | enum | 효과를 받는 기물 종류. 예: `OWN_PAWN`, `OWN_ROOK`, `OWN_KING_AND_ROOK`, `OPPONENT_PIECE` |
-| `selection` | enum | 효과 대상의 선택 방식. `SINGLE`은 1개, `MULTIPLE`은 여러 개, `ALL_ELIGIBLE`은 조건을 만족하는 전체 대상, `CLOSEST`는 거리 기준으로 가장 가까운 1개를 의미 |
+| `selection` | enum | 효과 대상의 선택 방식. `SINGLE`은 1개, `MULTIPLE`은 여러 개, `ALL_ELIGIBLE`은 조건을 만족하는 전체 대상, `USER_CHOICE_AMONG_CLOSEST`는 서버가 계산한 최단거리 후보 중 사용자가 1개를 선택함을 의미 |
 | `filter` | enum 배열 | `ALL_ELIGIBLE` 대상 중 실제 효과를 적용할 대상을 고르는 조건 |
 | `distance` | number | 이동 칸 수. 이동 효과가 아닌 경우에는 생략 |
-| `direction` | enum | 이동 방향. 예: `LEFT`, `RIGHT`, `UP_LEFT`, `UP_RIGHT`, `FORWARD` |
+| `direction` | enum | 카드 사용자 진영 기준 이동 방향. 예: `LEFT`, `RIGHT`, `FORWARD_LEFT`, `FORWARD_RIGHT`, `FORWARD` |
 | `promotion` | enum | 효과로 폰이 끝 행에 도달했을 때의 프로모션 처리. `DISABLED`는 프로모션을 발생시키지 않음을 의미 |
 | `movement` | object | 기물의 일반적인 이동 규칙과 이동 거리, 도착 칸 제약을 함께 표현하는 이동 효과 정보 |
 | `distanceMetric` | enum | 거리 계산 방식. `MANHATTAN`은 두 칸의 파일·랭크 차이 절댓값 합을 의미 |
 | `conversion` | enum | 효과 대상의 소유권 변경 방식. `OPPONENT_TO_OWN`은 상대 기물을 자신의 기물로 변경하는 방식 |
-| `kingTargetBehavior` | enum | 상대 킹이 자동 선택 대상일 때의 처리. `NO_OP_IF_NEAREST`는 효과를 적용하지 않음을 의미 |
-| `tiePolicy` | enum | 동일한 최단 거리 대상이 여러 개일 때 선택 방식. `FIXED_BOARD_ORDER`는 서버가 고정한 보드 좌표 순서를 사용함을 의미 |
+| `excludePieces` | enum 배열 | 서버 후보 계산에서 제외할 기물 종류. 예: `OPPONENT_KING` |
+| `ownershipAfterEffect` | enum | 소유권 변경 뒤 기물 이력과 특수 상태 처리. `PRESERVE_HISTORY_USE_NEW_OWNER_RULES`는 이력을 유지하고 이후 이동 규칙은 새 진영을 따름을 의미 |
+| `halfmoveClock` | enum | 카드 효과의 50수 규칙 처리. `RESET_ON_PAWN_MOVE_OR_CAPTURE`는 폰 이동·캡처 때만 0으로 초기화함을 의미 |
 
 `filter`의 값은 가능한 한 기존 조건을 재사용한다.
 현재 정의된 값은 다음과 같다.
@@ -102,7 +124,7 @@
 
 `selection`과 `filter`의 역할은 구분한다. `selection`은 몇 개를 대상으로 삼는지 결정하고, `filter`는 대상 후보 중 어떤 대상을 효과 적용 대상으로 인정할지 결정한다.
 
-`direction`의 `FORWARD`는 해당 기물의 진영이 정한 전진 방향을 뜻한다. `LEFT`, `RIGHT`, `UP_LEFT`, `UP_RIGHT`처럼 보드 방향을 사용하는 값은 게임에서 정한 보드 좌표 기준을 따른다.
+`direction`의 모든 값은 카드 사용자 진영 기준이다. `FORWARD`는 사용자 진영의 전진 방향이고 `LEFT`, `RIGHT`, `FORWARD_LEFT`, `FORWARD_RIGHT`는 위 방향 표를 따른다.
 
 `promotion`은 카드 효과가 폰의 위치를 변경할 수 있고 프로모션 처리에 대한 별도 규칙이 있을 때만 기록한다.
 
@@ -117,7 +139,7 @@
 
 `movement`는 이동 효과일 때만 기록한다. 폰의 고정 방향 이동처럼 이미 `direction`과 `distance`로 충분히 표현되는 효과에는 추가하지 않는다.
 
-위 거리·변환 필드는 해당 효과에서만 사용하는 효과별 세부 필드다. `tiePolicy`를 사용하는 카드는 서버와 FE 계약에서 고정된 보드 좌표 순서까지 함께 정의해야 한다.
+위 거리·변환 필드는 해당 효과에서만 사용하는 효과별 세부 필드다. 서버가 계산한 후보 중 사용자가 선택하는 효과는 actor-private 후보와 `stateVersion`을 함께 제공해야 한다.
 
 카드에 위 공통 필드가 필요하지 않으면 억지로 `null`을 넣지 말고 해당 필드를 생략한다. 새로운 필드가 꼭 필요할 때는 기존 필드와 의미가 겹치지 않는지 확인한 뒤 추가한다.
 
@@ -126,11 +148,15 @@
 - `additionalConditions`: 효과 적용 전에 확인하는 추가 제약
 - `failureConditions`: 추가 조건을 통과했지만 실제 효과를 적용하는 시점에 효과 적용이 불가능한 경우
 
-`failureConditions`가 발생하면 보드와 카드 효과 결과는 변경하지 않는다. 그러나 카드는 사용된 것으로 처리하며 마나는 차감되고 행동도 소비된다.
-현재 MVP 카드 정의에서는 `additionalConditions`를 통과한 뒤 `failureConditions`가 발생하는 경우가 없으므로, 해당 카드의 `failureConditions`는 빈 배열로 둘 수 있다.
+`additionalConditions` 또는 `failureConditions`를 충족하지 못하면 보드, 카드, 마나와 행동을 소비하지 않는다.
+현재 MVP 카드 정의에서 별도 효과 불발 성공 상태는 사용하지 않으며 해당 카드의 `failureConditions`는 빈 배열로 둘 수 있다.
 
 모든 카드 사용은 마나, 사용 시기, 대상, 추가 조건, 체크 상태, 최종 체스 상태를 서버에서 공통 검증한다.
 `additionalConditions`를 충족하지 못한 일반적인 사용 거부는 마나와 행동을 소비하지 않는다.
+
+카드 효과 자체는 halfmove clock을 추가로 증가시키지 않는다.
+폰 이동이나 캡처가 있으면 0으로 초기화하고, 그 외 위치 변경·교환·소유권 변경과 실패는 현재 값을 유지한다.
+같은 턴의 표준 말 이동은 이후 일반 체스 규칙대로 계산한다.
 
 ## 작성 예시
 
