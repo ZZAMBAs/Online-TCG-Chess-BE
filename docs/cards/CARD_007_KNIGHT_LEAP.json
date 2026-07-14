@@ -1,0 +1,43 @@
+{
+  "id": "CARD_007_KNIGHT_LEAP",
+  "name": "나이트의 도약",
+  "type": "NORMAL",
+  "packId": "BASIC",
+  "image": null,
+  "timing": [
+    "PRE_MOVE",
+    "POST_MOVE"
+  ],
+  "manaCost": 6,
+  "target": {
+    "type": "OWN_PIECE",
+    "count": 1
+  },
+  "additionalConditions": [
+    "선택한 기물은 자신의 나이트여야 한다.",
+    "선택한 나이트가 표준 나이트 이동으로 빈 칸에 이동할 수 있어야 한다.",
+    "이동 후 자신의 킹이 체크 상태가 되지 않아야 한다."
+  ],
+  "effect": {
+    "summary": "자신의 나이트 1개를 표준 나이트 이동으로 빈 칸에 이동한다.",
+    "details": {
+      "piece": "OWN_KNIGHT",
+      "selection": "SINGLE",
+      "movement": {
+        "pattern": "STANDARD",
+        "destinationMustBe": "EMPTY"
+      }
+    }
+  },
+  "failureConditions": [],
+  "uiText": {
+    "description": "자신의 나이트 1개를 빈 칸으로 이동합니다.",
+    "usageHint": "이동할 나이트와 표준 나이트 이동으로 도달 가능한 빈 칸을 선택하세요."
+  },
+  "visibility": {
+    "beforeUse": "PUBLIC",
+    "afterUse": "PUBLIC"
+  },
+  "active": true,
+  "version": 1
+}

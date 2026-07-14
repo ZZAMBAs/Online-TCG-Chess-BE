@@ -1,0 +1,43 @@
+{
+  "id": "CARD_012_KING_CONVERSION",
+  "name": "왕의 포섭",
+  "type": "LEGEND",
+  "packId": "BASIC",
+  "image": null,
+  "timing": [
+    "POST_MOVE"
+  ],
+  "manaCost": 9,
+  "target": {
+    "type": "NONE",
+    "count": 0
+  },
+  "additionalConditions": [
+    "자신의 킹과 상대의 살아 있는 기물 사이의 거리를 맨해튼 거리로 계산한다.",
+    "거리는 카드 효과를 적용하는 시점의 보드 상태를 기준으로 계산한다.",
+    "가장 가까운 상대 기물이 상대의 킹이면 아무런 보드 변경을 하지 않는다.",
+    "거리가 동일한 상대 기물이 여러 개라면 그 중 하나를 선택하여 변경한다."
+  ],
+  "effect": {
+    "summary": "자신의 킹과 가장 가까운 상대 기물 1개의 소유권을 자신의 것으로 변경한다.",
+    "details": {
+      "piece": "OPPONENT_PIECE",
+      "selection": "CLOSEST",
+      "distanceMetric": "MANHATTAN",
+      "conversion": "OPPONENT_TO_OWN",
+      "kingTargetBehavior": "NO_OP_IF_NEAREST",
+      "tiePolicy": "FIXED_BOARD_ORDER"
+    }
+  },
+  "failureConditions": [],
+  "uiText": {
+    "description": "자신의 킹과 가장 가까운 상대 기물 1개를 자신의 기물로 만듭니다.",
+    "usageHint": "효과 적용 시점의 맨해튼 거리로 대상이 결정됩니다. 상대 킹이 가장 가까우면 아무런 변화가 없습니다."
+  },
+  "visibility": {
+    "beforeUse": "PRIVATE",
+    "afterUse": "PUBLIC"
+  },
+  "active": true,
+  "version": 1
+}

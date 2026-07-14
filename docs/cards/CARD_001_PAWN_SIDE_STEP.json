@@ -1,0 +1,52 @@
+{
+  "id": "CARD_001_PAWN_SIDE_STEP",
+  "name": "폰 사이드스텝",
+  "type": "NORMAL",
+  "packId": "BASIC",
+  "image": null,
+  "timing": [
+    "PRE_MOVE",
+    "POST_MOVE"
+  ],
+  "manaCost": 2,
+  "target": {
+    "type": "OWN_PAWN",
+    "count": 1,
+    "parameters": {
+      "direction": {
+        "type": "ENUM",
+        "allowedValues": [
+          "LEFT",
+          "RIGHT"
+        ],
+        "required": true
+      }
+    }
+  },
+  "additionalConditions": [
+    "선택한 폰을 지정한 방향으로 1칸 이동할 수 있어야 한다.",
+    "지정한 방향의 인접 칸이 체스판 안에 있어야 한다."
+  ],
+  "effect": {
+    "summary": "자신의 폰을 좌측 또는 우측으로 1칸 이동한다.",
+    "details": {
+      "piece": "OWN_PAWN",
+      "distance": 1,
+      "directions": [
+        "LEFT",
+        "RIGHT"
+      ]
+    }
+  },
+  "failureConditions": [],
+  "uiText": {
+    "description": "자신의 폰 1개를 좌측 또는 우측으로 1칸 이동합니다.",
+    "usageHint": "이동할 폰과 방향을 선택하세요. 이동할 위치는 비어 있어야 합니다."
+  },
+  "visibility": {
+    "beforeUse": "PUBLIC",
+    "afterUse": "PUBLIC"
+  },
+  "active": true,
+  "version": 1
+}

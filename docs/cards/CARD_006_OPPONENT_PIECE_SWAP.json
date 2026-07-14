@@ -1,0 +1,40 @@
+{
+  "id": "CARD_006_OPPONENT_PIECE_SWAP",
+  "name": "기물 강제 교환",
+  "type": "LEGEND",
+  "packId": "BASIC",
+  "image": null,
+  "timing": [
+    "PRE_MOVE",
+    "POST_MOVE"
+  ],
+  "manaCost": 8,
+  "target": {
+    "type": "OPPONENT_PIECE",
+    "count": 2
+  },
+  "additionalConditions": [
+    "선택한 두 기물은 상대가 소유한 살아 있는 기물이어야 한다.",
+    "선택한 기물은 킹 또는 퀸일 수 없다.",
+    "두 기물의 위치를 변경한 후 자신의 킹이 체크 상태가 되지 않아야 한다."
+  ],
+  "effect": {
+    "summary": "상대 기물 2개의 위치를 서로 맞바꾼다.",
+    "details": {
+      "piece": "OPPONENT_PIECE",
+      "selection": "MULTIPLE",
+      "promotion": "DISABLED"
+    }
+  },
+  "failureConditions": [],
+  "uiText": {
+    "description": "상대의 기물 2개를 선택해 위치를 서로 맞바꿉니다. 킹과 퀸은 선택할 수 없습니다.",
+    "usageHint": "상대의 살아 있는 기물 2개를 선택하세요. 효과 적용 후 자신의 킹이 체크 상태가 되면 사용할 수 없습니다."
+  },
+  "visibility": {
+    "beforeUse": "PRIVATE",
+    "afterUse": "PUBLIC"
+  },
+  "active": true,
+  "version": 1
+}
