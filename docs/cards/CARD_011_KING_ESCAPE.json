@@ -11,7 +11,13 @@
   "manaCost": 3,
   "target": {
     "type": "OWN_PIECE",
-    "count": 1
+    "count": 1,
+    "parameters": {
+      "destination": {
+        "type": "BOARD_SQUARE",
+        "required": true
+      }
+    }
   },
   "additionalConditions": [
     "선택한 기물은 자신의 킹이어야 한다.",

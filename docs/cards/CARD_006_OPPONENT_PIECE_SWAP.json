@@ -11,10 +11,12 @@
   "manaCost": 8,
   "target": {
     "type": "OPPONENT_PIECE",
-    "count": 2
+    "count": 2,
+    "distinct": true,
+    "ordered": false
   },
   "additionalConditions": [
-    "선택한 두 기물은 상대가 소유한 살아 있는 기물이어야 한다.",
+    "선택한 서로 다른 두 기물은 상대가 소유한 살아 있는 기물이어야 한다.",
     "선택한 기물은 킹 또는 퀸일 수 없다.",
     "두 기물의 위치를 변경한 후 자신의 킹이 체크 상태가 되지 않아야 한다."
   ],
@@ -23,13 +25,16 @@
     "details": {
       "piece": "OPPONENT_PIECE",
       "selection": "MULTIPLE",
-      "promotion": "DISABLED"
+      "promotion": "DISABLED",
+      "castlingRightsAfterEffect": "REMOVE_FOR_SWAPPED_ROOKS",
+      "enPassantAfterEffect": "CLEAR_RELATED_DO_NOT_CREATE",
+      "halfmoveClock": "RESET_ON_PAWN_MOVE_OR_CAPTURE"
     }
   },
   "failureConditions": [],
   "uiText": {
     "description": "상대의 기물 2개를 선택해 위치를 서로 맞바꿉니다. 킹과 퀸은 선택할 수 없습니다.",
-    "usageHint": "상대의 살아 있는 기물 2개를 선택하세요. 효과 적용 후 자신의 킹이 체크 상태가 되면 사용할 수 없습니다."
+    "usageHint": "상대의 서로 다른 살아 있는 기물 2개를 선택하세요. 선택 순서는 결과에 영향을 주지 않으며 효과 적용 후 자신의 킹이 체크 상태가 되면 사용할 수 없습니다."
   },
   "visibility": {
     "beforeUse": "PRIVATE",

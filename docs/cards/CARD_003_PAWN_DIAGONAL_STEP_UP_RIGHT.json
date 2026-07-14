@@ -14,21 +14,23 @@
     "count": 1
   },
   "additionalConditions": [
-    "선택한 폰의 오른쪽 대각선 위쪽 1칸이 비어 있어야 한다.",
-    "선택한 폰의 오른쪽 대각선 위쪽 1칸이 유효한 보드 칸이어야 한다."
+    "선택한 폰의 카드 사용자 진영 기준 오른쪽 대각선 앞쪽 1칸이 비어 있어야 한다.",
+    "해당 칸이 유효한 보드 칸이어야 한다."
   ],
   "effect": {
-    "summary": "자신의 폰을 오른쪽 대각선 위쪽으로 1칸 이동한다.",
+    "summary": "자신의 폰을 카드 사용자 진영 기준 오른쪽 대각선 앞쪽으로 1칸 이동한다.",
     "details": {
       "piece": "OWN_PAWN",
       "distance": 1,
-      "direction": "UP_RIGHT"
+      "direction": "FORWARD_RIGHT",
+      "directionReference": "CARD_ACTOR_COLOR",
+      "halfmoveClock": "RESET_ON_PAWN_MOVE_OR_CAPTURE"
     }
   },
   "failureConditions": [],
   "uiText": {
-    "description": "자신의 폰 1개를 오른쪽 대각선 위쪽으로 1칸 이동합니다.",
-    "usageHint": "이동할 폰을 선택하세요. 오른쪽 대각선 위쪽 칸은 비어 있고 보드 안에 있어야 합니다."
+    "description": "자신의 폰 1개를 자신의 진영 기준 오른쪽 대각선 앞쪽으로 1칸 이동합니다.",
+    "usageHint": "이동할 폰을 선택하세요. 자신의 진영 기준 오른쪽 대각선 앞쪽 칸은 비어 있고 보드 안에 있어야 합니다."
   },
   "visibility": {
     "beforeUse": "PUBLIC",

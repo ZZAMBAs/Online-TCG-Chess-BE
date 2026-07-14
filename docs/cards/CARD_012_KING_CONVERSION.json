@@ -9,30 +9,42 @@
   ],
   "manaCost": 9,
   "target": {
-    "type": "NONE",
-    "count": 0
+    "type": "OPPONENT_PIECE",
+    "count": 1,
+    "selection": "USER_CHOICE_AMONG_CLOSEST",
+    "distanceFrom": "OWN_KING",
+    "distanceMetric": "MANHATTAN",
+    "excludePieces": [
+      "OPPONENT_KING"
+    ]
   },
   "additionalConditions": [
-    "자신의 킹과 상대의 살아 있는 기물 사이의 거리를 맨해튼 거리로 계산한다.",
+    "상대 킹을 제외한 살아 있는 상대 기물과 자신의 킹 사이의 거리를 맨해튼 거리로 계산한다.",
     "거리는 카드 효과를 적용하는 시점의 보드 상태를 기준으로 계산한다.",
-    "가장 가까운 상대 기물이 상대의 킹이면 아무런 보드 변경을 하지 않는다.",
-    "거리가 동일한 상대 기물이 여러 개라면 그 중 하나를 선택하여 변경한다."
+    "카드 사용자는 서버가 계산한 최단거리 후보 중 하나를 선택해야 한다.",
+    "상대 킹을 제외한 살아 있는 상대 기물이 없으면 카드를 사용할 수 없다."
   ],
   "effect": {
-    "summary": "자신의 킹과 가장 가까운 상대 기물 1개의 소유권을 자신의 것으로 변경한다.",
+    "summary": "상대 킹을 제외하고 자신의 킹과 가장 가까운 상대 기물 후보 중 하나를 선택해 소유권을 자신의 것으로 변경한다.",
     "details": {
       "piece": "OPPONENT_PIECE",
-      "selection": "CLOSEST",
+      "selection": "USER_CHOICE_AMONG_CLOSEST",
       "distanceMetric": "MANHATTAN",
       "conversion": "OPPONENT_TO_OWN",
-      "kingTargetBehavior": "NO_OP_IF_NEAREST",
-      "tiePolicy": "FIXED_BOARD_ORDER"
+      "excludePieces": [
+        "OPPONENT_KING"
+      ],
+      "ownershipAfterEffect": "PRESERVE_HISTORY_USE_NEW_OWNER_RULES",
+      "castlingRightsAfterEffect": "REMOVE_FOR_CONVERTED_ROOK",
+      "enPassantAfterEffect": "CLEAR_RELATED_DO_NOT_CREATE",
+      "promotion": "DISABLED",
+      "halfmoveClock": "PRESERVE"
     }
   },
   "failureConditions": [],
   "uiText": {
-    "description": "자신의 킹과 가장 가까운 상대 기물 1개를 자신의 기물로 만듭니다.",
-    "usageHint": "효과 적용 시점의 맨해튼 거리로 대상이 결정됩니다. 상대 킹이 가장 가까우면 아무런 변화가 없습니다."
+    "description": "상대 킹을 제외하고 자신의 킹과 가장 가까운 상대 기물 후보 중 하나를 자신의 기물로 만듭니다.",
+    "usageHint": "서버가 표시한 최단거리 후보 중 하나를 선택하세요. 후보가 없으면 카드를 사용할 수 없습니다."
   },
   "visibility": {
     "beforeUse": "PRIVATE",

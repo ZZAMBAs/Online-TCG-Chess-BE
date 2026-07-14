@@ -11,7 +11,13 @@
   "manaCost": 6,
   "target": {
     "type": "OWN_PIECE",
-    "count": 1
+    "count": 1,
+    "parameters": {
+      "destination": {
+        "type": "BOARD_SQUARE",
+        "required": true
+      }
+    }
   },
   "additionalConditions": [
     "선택한 기물은 자신의 나이트여야 한다.",
