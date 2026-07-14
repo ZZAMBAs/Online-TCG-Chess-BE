@@ -5,13 +5,15 @@
 
 ## 파일 규칙
 
-- 카드 파일명은 `{id}.json` 형식을 사용한다.
+- 최초 버전 카드 파일명은 `{id}.json`, 후속 버전은 `{id}.v{version}.json` 형식을 사용한다. 파일명보다 JSON의 `id`와 `version` 조합이 권위 식별자다.
 - `id`는 한 번 정하면 변경하지 않는다.
 - 같은 `(id, version)` 정의는 배포 후 제자리 수정하거나 삭제하지 않는다.
 - 비용, timing, 발동 조건, 후보 규칙, 효과, 효과 실패 시 소비, visibility 또는 projection 의미가 바뀌면 새 version을 발행한다. 아직 배포·고정되지 않은 최초 협상본의 보완은 version 1 안에서 완료할 수 있다.
 - 현재 MVP 카드팩 ID는 `BASIC`이다.
 - 카드 효과는 서버가 권위적으로 판정하며, JSON의 설명만으로 클라이언트가 결과를 계산하지 않는다.
 - 카드별 JSON에는 사용자에게 보여줄 문구와 서버 검증에 필요한 의미 정보를 함께 기록한다.
+- 현재 신규 경기에 사용할 버전은 카드 JSON의 필드가 아니라 `active-versions.json`에서 카드 식별자별로 하나씩 지정한다.
+- 활성 버전 변경은 `active-versions.json` 변경, catalog 검증과 새 배포를 통해서만 수행한다.
 
 ## 공통 필드
 
@@ -31,8 +33,17 @@
 | `effectFailureConditions` | string 배열 | 발동은 성공했지만 효과 적용이 실패하는 대표 조건. 비용은 유지 |
 | `uiText` | object | FE가 표시할 설명과 사용 안내 문구 |
 | `visibility` | object | 카드가 상대에게 공개되는 시점 |
-| `active` | boolean | 현재 카드팩과 게임에서 사용 가능한 카드인지 여부 |
 | `version` | number | 카드 정의 버전. 규칙 또는 FE/BE 계약 의미가 변경되면 단조 증가 |
+
+## 활성 버전 목록
+
+`active-versions.json`은 신규 경기와 현재 상품 노출에 사용할 카드 버전을 지정한다.
+
+- `schemaVersion`: 활성 목록 형식 버전
+- `cards`: `{id, version}` 항목의 배열
+- 같은 카드 식별자는 정확히 한 번만 나타나야 한다.
+- 항목은 반드시 같은 디렉터리에 존재하는 카드 정의의 `id`와 `version`을 가리켜야 한다.
+- 카드 정의 파일에 활성 여부를 중복 기록하지 않는다.
 
 ## 허용 enum
 

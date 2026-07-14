@@ -43,6 +43,5 @@
     "beforeUse": "PUBLIC",
     "afterUse": "PUBLIC"
   },
-  "active": true,
   "version": 1
 }

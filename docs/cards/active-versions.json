@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "cards": [
+    {"id": "CARD_001_PAWN_SIDE_STEP", "version": 1},
+    {"id": "CARD_002_PAWN_DIAGONAL_STEP_UP_LEFT", "version": 1},
+    {"id": "CARD_003_PAWN_DIAGONAL_STEP_UP_RIGHT", "version": 1},
+    {"id": "CARD_004_PAWN_MASS_ADVANCE", "version": 1},
+    {"id": "CARD_005_CASTLING", "version": 1},
+    {"id": "CARD_006_OPPONENT_PIECE_SWAP", "version": 1},
+    {"id": "CARD_007_KNIGHT_LEAP", "version": 1},
+    {"id": "CARD_008_BISHOP_GLIDE", "version": 1},
+    {"id": "CARD_009_ROOK_MARCH", "version": 1},
+    {"id": "CARD_010_QUEEN_STEP", "version": 1},
+    {"id": "CARD_011_KING_ESCAPE", "version": 1},
+    {"id": "CARD_012_KING_CONVERSION", "version": 1}
+  ]
+}

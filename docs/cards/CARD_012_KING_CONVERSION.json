@@ -60,6 +60,5 @@
     "beforeUse": "PRIVATE",
     "afterUse": "PUBLIC"
   },
-  "active": true,
   "version": 1
 }
