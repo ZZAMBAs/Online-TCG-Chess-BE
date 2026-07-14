@@ -17,6 +17,7 @@ Reverse Proxy / TLS termination
   | REST + WebSocket upgrade
   v
 Spring Boot single instance
+  |-- packaged card catalog / active-version manifest
   |
   v
 MySQL compatible RDB
@@ -36,7 +37,8 @@ MySQL compatible RDB
 
 ## 데이터 저장소 구성
 
-- MySQL 호환 RDB: domain data, GameEvent, GameSnapshot, audit, read model aggregate
+- MySQL 호환 RDB: domain data, 모든 배포 카드 버전과 활성 버전, GameEvent, GameSnapshot, audit, read model aggregate
+- 애플리케이션 산출물: 검증된 카드 catalog와 활성 버전 목록
 - 활성 경기: Spring Boot process memory
 - Redis, queue, NoSQL, data warehouse: MVP 미도입
 

@@ -10,6 +10,7 @@ TCG Online Chess MVP의 서버 구조, 모듈 경계, 의존성 방향과 저장
 - `docs/prd.md`
 - `docs/features/*/prd.md`
 - `docs/architecture/interview-20260710/interview-log.md`
+- `docs/architecture/interview-20260714/interview-log.md`
 
 ## 현재 구현 기준
 
@@ -52,7 +53,7 @@ org.zzambas.tcgonlinechessbe
 - `identity`: 계정, 세션 인증, OAuth, 이메일 인증, 설정
 - `matchmaking`: 대기열, MMR 후보 탐색, 경기 생성 전 확정
 - `gameplay`: 체스, 턴, 카드 행동, 마나, 타이머, 재접속, 활성 경기 상태
-- `cardcollection`: 카드 master, 컬렉션, 카드팩, 덱 유효성
+- `cardcollection`: 버전 카드 catalog, 활성 버전, 컬렉션, 카드팩, 덱 유효성
 - `matchhistory`: 결과, 전적, MMR 반영, 기보, 통계 read model
 - `matchchat`: 경기 채팅, 마스킹, 전달 제한, 신고 증거
 - `community`: 게시글, 검색, 상태, 자동 숨김 결과
@@ -88,11 +89,21 @@ org.zzambas.tcgonlinechessbe
 
 ## 저장과 트랜잭션 책임
 
-- MySQL RDB가 계정, 카드, 덱, 결과, 기보, 신고, 감사, 집계 read model의 영속 원천이다.
+- MySQL RDB가 계정, 덱, 결과, 기보, 신고, 감사, 집계 read model과 배포된 카드 catalog의 실행·조회 원천이다. 카드 정의의 작성·배포 원천은 버전 관리되는 `docs/cards`다.
 - `GameEvent`는 append-only 기보·통계 원천이고 `GameSnapshot`은 복구 보조다.
 - 활성 경기는 단일 인스턴스 메모리에서 처리한다.
 - 경기 종료는 결과, 전적, MMR, 기보 봉인, 통계 집계를 application service 트랜잭션 경계에서 함께 확정한다.
 - 카드 사용·체크메이트 기물·카드 투입/승리 통계는 GameEvent에서 파생한 MySQL read model로 관리한다.
+
+## 카드 catalog와 버전 저장
+
+- `docs/cards`의 버전별 JSON과 별도 활성 버전 목록을 카드 작성 원천으로 사용하고 검증된 빌드 산출물에 포함한다.
+- `cardcollection` 모듈이 패키징된 catalog를 읽어 RDB의 카드 정의와 활성 버전을 동기화하는 application port를 소유한다.
+- RDB에는 검증·배포된 모든 카드 식별자·버전을 불변으로 보존한다. 동일 식별자·버전의 저장 내용이 다르면 기동을 실패시키고 새 버전만 추가한다.
+- 카드별 활성 버전은 버전 정의와 분리한다. 신규 경기 생성 시 `gameplay`는 `cardcollection`의 공개 application port로 활성 버전을 조회해 경기 덱에 고정하고 저장소를 직접 참조하지 않는다.
+- 활성 버전은 RDB 운영 수정으로 전환하지 않고 버전 관리되는 활성 버전 목록을 변경한 새 배포에서만 전환한다.
+- 활성화하거나 롤백 대상으로 유지하는 모든 카드 버전은 `gameplay`의 효과 처리와 선택·공개 계약·fixture를 함께 제공해야 한다. 기존 효과 처리로 표현할 수 없는 변경에는 새 버전용 처리를 추가한다.
+- 과거 기보는 저장된 `GameEvent` 결과와 당시 카드 식별자·버전을 사용하며 최신 효과 처리를 재실행하지 않는다.
 
 ## 정적 분석과 강제 규칙
 
@@ -119,5 +130,5 @@ org.zzambas.tcgonlinechessbe
 
 ## 미확정 사항
 
-- 카드/팩 master 원본의 파일 포맷과 DB seed 연결 방식
+- 카드팩 정의와 확률 버전의 작성 원천·RDB 동기화 범위
 - 통계 read model의 갱신 시점, 재집계 운영 방식, 사용자 노출 범위

@@ -21,6 +21,9 @@
 - Spring Security Test: 인증·CSRF·계정 상태·제재 테스트가 생기는 즉시 필수
 - OpenAPI/STOMP contract test: FE/BE 계약 fixture 합의 뒤 활성화
 - Actuator/Prometheus endpoint와 민감 정보 제외: 운영 설정 도입 뒤 검증
+- 카드 catalog 구조·식별자/버전 중복·활성 버전 참조 검증: 검증 task 구현 즉시 Hard gate로 전환
+- 활성화·롤백 가능한 모든 카드 버전의 정의·효과 처리·선택·공개 결과·fixture 완결성: fixed 계약과 registry 구현 즉시 Hard gate로 전환
+- 카드 버전 불변 동기화와 경기별 활성 버전 고정: persistence 구현 시 Testcontainers MySQL 검증에 포함
 
 ## Advisory 도구
 
@@ -73,6 +76,7 @@
 
 - Spring Security session/CSRF/STOMP interceptor 통합 테스트
 - Flyway와 Testcontainers MySQL migration 테스트
+- 카드 catalog 불변 동기화, 활성 버전 전환과 경기별 버전 고정 통합 테스트
 - ArchUnit module boundary rule
 - Spotless Gradle integration
 
@@ -85,4 +89,5 @@
 
 - PMD/SpotBugs/JaCoCo의 세부 rule와 threshold
 - contract test fixture와 FE 연동 방식
+- 카드 catalog 검증 task와 효과 처리 registry 구현 시점
 - SLO/alert/RPO/RTO 기준
