@@ -32,7 +32,7 @@
         "docs/spec/spec-fixed.md": "6ac09a695776736f72bd683785d6e8b9c343f4af5f86545bd1964218cd7a7f10"
       },
       "outputs": {
-        "docs/features/card-collection-deck/prd.md": "e6e6d92fc333ea0a775ea368d2ffa047d6597ae648b0b322b4e32e41ff10505a",
+        "docs/features/card-collection-deck/prd.md": "3f1e10deee9004a5b945a0b891478ba246956a3b102e3ffca735b4a994c35e22",
         "docs/features/community/prd.md": "de0e8ae30f62e9dc7e8b6906a057aa14b9a5155c2f34e5762338e5706f5d9687",
         "docs/features/gameplay/prd.md": "41ae7d0bd53323fbe730c86957c2904de04cd2ed5c8a1583c180c62f4edfb43f",
         "docs/features/identity-account/prd.md": "515360e592ddfe8695c7a5b956429cbb67d8fdfb426f07a715a80233007c6e6a",
@@ -40,8 +40,8 @@
         "docs/features/match-history/prd.md": "3518bb02d796003059cf8d5c6bdaa294cf0f646a05c8e41e3a8a481fbec8eeef",
         "docs/features/matchmaking/prd.md": "b11a29c26e2fcf9369afe11a42a27fab132cab7380a6cbf91c8424ac150e9b18",
         "docs/features/trust-safety-admin/prd.md": "dc21f9cd11d35730f2a4ea92db76f40003a9ba6c877072360db030d29feab3d9",
-        "docs/prd.md": "abe0a6ccbfb1ed264f81d86b9eaae686283850f27d11721f6f6276d74e381785",
-        "docs/traceability.md": "f95b7763ea7a5d3de3cdadd67eb27977cd588decfc0645b1b376e9d8e259e83a"
+        "docs/prd.md": "a5d3839d1075af9fcb1629ab3029ba8ed46b3c944ddd046b38916e1c24ed242e",
+        "docs/traceability.md": "d4966b5d226136815059f007e14844b535e8a18ec2993464ec85697427888e78"
       },
       "status": "current"
     }
