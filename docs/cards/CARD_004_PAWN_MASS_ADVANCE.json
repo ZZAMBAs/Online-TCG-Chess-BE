@@ -13,12 +13,12 @@
     "type": "NONE",
     "count": 0
   },
-  "additionalConditions": [
+  "activationConditions": [
     "한 번도 이동하지 않았고 전방 1칸이 비어 있는 자신의 폰이 1개 이상 있어야 한다.",
     "막힌 폰은 효과 대상에서 제외한다."
   ],
   "effect": {
-    "summary": "한 번도 이동하지 않은 자신의 폰을 전부 전방으로 1칸 이동한다.",
+    "summary": "한 번도 이동하지 않았고 전방이 비어 있는 자신의 폰을 전부 전방으로 1칸 이동한다.",
     "details": {
       "piece": "OWN_PAWN",
       "selection": "ALL_ELIGIBLE",
@@ -32,9 +32,17 @@
       "halfmoveClock": "RESET_ON_PAWN_MOVE_OR_CAPTURE"
     }
   },
-  "failureConditions": [],
+  "resolution": {
+    "mode": "SAME_COMMAND",
+    "partialEffectOnFailure": "ROLLBACK",
+    "costOnEffectFailure": "PRESERVE",
+    "reselectionOnEffectFailure": "DISALLOWED"
+  },
+  "effectFailureConditions": [
+    "eligible 폰 전체의 동시 이동 결과가 공통 체스 불변식을 위반한다."
+  ],
   "uiText": {
-    "description": "한 번도 이동하지 않은 자신의 폰을 전부 전방으로 1칸 이동합니다.",
+    "description": "한 번도 이동하지 않았고 전방이 비어 있는 자신의 폰을 전부 전방으로 1칸 이동합니다. 막힌 폰은 그대로 남습니다.",
     "usageHint": "대상을 선택하지 않습니다. 이동한 적 없고 전방이 비어 있는 자신의 폰이 이동합니다."
   },
   "visibility": {

@@ -13,8 +13,8 @@
     "type": "OWN_ROOK",
     "count": 1
   },
-  "additionalConditions": [
-    "선택한 룩을 기준으로 일반적인 체스 캐슬링 조건을 모두 만족해야 한다."
+  "activationConditions": [
+    "일반적인 체스 캐슬링 조건을 모두 만족하는 자신의 룩 후보가 1개 이상 있어야 한다."
   ],
   "effect": {
     "summary": "선택한 룩을 기준으로 캐슬링한다.",
@@ -23,7 +23,18 @@
       "selection": "SINGLE"
     }
   },
-  "failureConditions": [],
+  "resolution": {
+    "mode": "SEPARATE_COMMAND",
+    "malformedRequest": "KEEP_PENDING",
+    "outOfCandidateSelection": "EFFECT_FAILED",
+    "partialEffectOnFailure": "ROLLBACK",
+    "costOnEffectFailure": "PRESERVE",
+    "reselectionOnEffectFailure": "DISALLOWED"
+  },
+  "effectFailureConditions": [
+    "제출한 룩이 발동 시 확정한 캐슬링 후보에 포함되지 않는다.",
+    "효과 적용 결과가 공통 체스 불변식을 위반한다."
+  ],
   "uiText": {
     "description": "선택한 룩과 함께 캐슬링합니다.",
     "usageHint": "캐슬링할 위치의 룩을 선택하세요. 일반적인 캐슬링 조건을 만족해야 합니다."

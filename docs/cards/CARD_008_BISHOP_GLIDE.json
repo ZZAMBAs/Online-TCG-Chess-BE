@@ -19,10 +19,8 @@
       }
     }
   },
-  "additionalConditions": [
-    "선택한 기물은 자신의 비숍이어야 한다.",
-    "선택한 비숍이 표준 대각선 이동으로 2칸 이내의 빈 칸에 이동할 수 있어야 한다.",
-    "이동 후 자신의 킹이 체크 상태가 되지 않아야 한다."
+  "activationConditions": [
+    "표준 대각선 이동으로 2칸 이내의 빈 칸에 도달 가능한 자신의 비숍 후보가 1개 이상 있어야 한다."
   ],
   "effect": {
     "summary": "자신의 비숍 1개를 대각선 방향의 빈 칸으로 최대 2칸 이동한다.",
@@ -36,7 +34,18 @@
       }
     }
   },
-  "failureConditions": [],
+  "resolution": {
+    "mode": "SEPARATE_COMMAND",
+    "malformedRequest": "KEEP_PENDING",
+    "outOfCandidateSelection": "EFFECT_FAILED",
+    "partialEffectOnFailure": "ROLLBACK",
+    "costOnEffectFailure": "PRESERVE",
+    "reselectionOnEffectFailure": "DISALLOWED"
+  },
+  "effectFailureConditions": [
+    "제출한 비숍과 도착 칸 조합이 발동 시 확정한 후보에 포함되지 않는다.",
+    "이동 결과 자신의 킹이 체크 상태이거나 공통 체스 불변식을 위반한다."
+  ],
   "uiText": {
     "description": "자신의 비숍 1개를 대각선 방향으로 최대 2칸 이동합니다.",
     "usageHint": "이동할 비숍과 경로가 비어 있는 도착 칸을 선택하세요."

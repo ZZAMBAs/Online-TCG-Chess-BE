@@ -15,10 +15,8 @@
     "distinct": true,
     "ordered": false
   },
-  "additionalConditions": [
-    "선택한 서로 다른 두 기물은 상대가 소유한 살아 있는 기물이어야 한다.",
-    "선택한 기물은 킹 또는 퀸일 수 없다.",
-    "두 기물의 위치를 변경한 후 자신의 킹이 체크 상태가 되지 않아야 한다."
+  "activationConditions": [
+    "상대가 소유한 살아 있는 기물 중 킹과 퀸을 제외한 서로 다른 기물이 2개 이상 있어야 한다."
   ],
   "effect": {
     "summary": "상대 기물 2개의 위치를 서로 맞바꾼다.",
@@ -31,10 +29,21 @@
       "halfmoveClock": "RESET_ON_PAWN_MOVE_OR_CAPTURE"
     }
   },
-  "failureConditions": [],
+  "resolution": {
+    "mode": "SEPARATE_COMMAND",
+    "malformedRequest": "KEEP_PENDING",
+    "outOfCandidateSelection": "EFFECT_FAILED",
+    "partialEffectOnFailure": "ROLLBACK",
+    "costOnEffectFailure": "PRESERVE",
+    "reselectionOnEffectFailure": "DISALLOWED"
+  },
+  "effectFailureConditions": [
+    "제출한 순서 없는 두 기물 조합이 발동 시 확정한 후보에 포함되지 않는다.",
+    "두 기물의 위치를 교환한 결과 자신의 킹이 체크 상태이거나 공통 체스 불변식을 위반한다."
+  ],
   "uiText": {
     "description": "상대의 기물 2개를 선택해 위치를 서로 맞바꿉니다. 킹과 퀸은 선택할 수 없습니다.",
-    "usageHint": "상대의 서로 다른 살아 있는 기물 2개를 선택하세요. 선택 순서는 결과에 영향을 주지 않으며 효과 적용 후 자신의 킹이 체크 상태가 되면 사용할 수 없습니다."
+    "usageHint": "상대의 킹과 퀸을 제외한 서로 다른 살아 있는 기물 2개를 선택하세요. 선택 순서는 결과에 영향을 주지 않으며 최종 불변식을 위반하면 비용이 소모된 채 효과가 실패합니다."
   },
   "visibility": {
     "beforeUse": "PRIVATE",
