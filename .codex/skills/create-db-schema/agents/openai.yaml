@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create DB Schema"
+  short_description: "TRD 기반 DB 스키마와 Flyway migration 작성"
+  default_prompt: "Use $create-db-schema after $create-trd to draft and, after approval, create the database schema resources before issue creation."
