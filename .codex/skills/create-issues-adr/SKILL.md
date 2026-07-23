@@ -1,6 +1,6 @@
 ---
 name: create-issues-adr
-description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architecture 산출물, 필요 시 확정된 docs/contracts/{topic}.md를 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, read-only 이슈 검증, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd와 create-trd 이후 issue 분리, Given-When-Then AC, TDD 가능한 테스트 시나리오/테스트 관점 도출, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
+description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, 최신 DB schema resource, architecture 산출물, 필요 시 확정된 docs/contracts/{topic}.md를 기준으로 특정 {feature} 또는 전체 feature의 순차 의존성을 가진 수직 슬라이스 로컬 이슈, feature 단위 ADR, read-only 이슈 검증, GitHub Issue 연결을 한국어로 생성·갱신해야 할 때 사용한다. create-prd, create-trd, create-db-schema 이후 issue 분리, Given-When-Then AC, TDD 가능한 테스트 시나리오/테스트 관점 도출, depends_on 실행 게이트, REST/STOMP 계약 테스트 관점, ADR 대안 비교 표, docs/issue-map.md와 docs/adr-index.md 갱신, GitHub Issue 제목 접두어 [{feature}-{nnn}], .github/ISSUE_TEMPLATE/feature-implementation.md 적용, gh CLI 및 GitHub MCP/app connector fallback에 사용하며 spec/prd/trd 원문 수정, PRD/TRD 생성, 요구사항 인터뷰, 스펙 리뷰, issue template 작성은 하지 않는다.
 ---
 
 # Create Issues ADR
@@ -15,6 +15,7 @@ description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architectu
 - `docs/spec/*`, `docs/prd.md`, `docs/trd.md`, `docs/features/{feature}/prd.md`, `docs/features/{feature}/trd.md`는 입력 문서로만 취급하고 수정하지 않는다.
 - PRD/TRD 파일이 없거나 `python3 .codex/scripts/artifact-state.py verify prd`, `verify architecture`, `verify trd`가 실패하면 이슈 생성을 멈추고 해당 산출물 생성 또는 갱신을 요청한다.
 - `docs/contracts/*.md`가 있으면 이슈 생성 전에 `python3 .codex/scripts/artifact-state.py verify contracts`를 실행한다.
+- `python3 .codex/scripts/artifact-state.py verify db-schema`가 실패하면 이슈 생성을 멈추고 `$create-db-schema`로 schema resource를 생성 또는 갱신하도록 요청한다.
 - 외부 REST/STOMP, 인증/CSRF/cookie, 오류 포맷, 상태 동기화, projection, fixture처럼 FE/BE 협상 대상인 계약은 `docs/contracts/{topic}.md`의 `implementation_status: ready` 내용을 이슈 AC와 테스트 관점에 반영한다.
 - 기존 `docs/features/{feature}/issues/*`, `docs/features/{feature}/adr/*`, `docs/issue-map.md`, `docs/adr-index.md`가 있으면 먼저 읽고 중복 생성 대신 보완한다.
 - 로컬 문서를 원천 추적 기준으로 삼는다. GitHub Issue 생성은 사용자가 명시적으로 요청하고 승인한 경우에만 수행한다.
@@ -41,6 +42,7 @@ description: docs/spec/spec-fixed.md와 존재하는 feature PRD/TRD, architectu
 - 공통 산출물: `docs/prd.md`, `docs/trd.md`, `docs/milestones.md`, `docs/traceability.md`, `docs/websocket-spec.md`
 - 기능 산출물: `docs/features/{feature}/prd.md`, `docs/features/{feature}/trd.md`
 - BE 구현 계약 산출물: `docs/contracts/*.md`
+- DB schema 산출물: `src/main/resources/db/migration/*.sql`, `src/main/resources/nosql/*/*`
 - 아키텍처 산출물: `docs/architecture/*`
 - 기존 후속 산출물: `docs/features/{feature}/issues/*`, `docs/features/{feature}/adr/*`, `docs/issue-map.md`, `docs/adr-index.md`
 
@@ -69,6 +71,8 @@ python3 .codex/scripts/artifact-state.py record issues-{feature} \
   --input-glob 'docs/architecture/*.md' \
   --input-glob 'docs/architecture/fixed-*/*.md' \
   --optional-input-glob 'docs/contracts/*.md' \
+  --optional-input-glob 'src/main/resources/db/migration/*.sql' \
+  --optional-input-glob 'src/main/resources/nosql/*/*' \
   --output-glob 'docs/features/{feature}/issues/*/issue.md' \
   --output 'docs/features/{feature}/issues/issue-verification.md' \
   --optional-output-glob 'docs/features/{feature}/adr/*.md' \

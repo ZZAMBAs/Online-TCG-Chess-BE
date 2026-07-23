@@ -11,13 +11,13 @@
 ## 필수 워크플로
 
 ```text
-$spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $negotiate-fe-be-contract -> $sync-be-contracts -> $create-trd -> $create-issues-adr -> $tdd-workflow -> $create-pr
+$spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $negotiate-fe-be-contract -> $sync-be-contracts -> $create-trd -> $create-db-schema -> $create-issues-adr -> $tdd-workflow -> $create-pr
 ```
 
 - 요구사항 변경은 인터뷰와 리뷰를 거친다.
 - 아키텍처 선택 또는 확정 사항 변경은 `$architecture-decision`으로 재검토한다.
 - FE 공유 계약은 REST·STOMP·인증·오류·상태 동기화·projection·fixture 등 전체 협상 topic이 `fixed`이고 `docs/negotiation/session.md`가 `completed`가 된 뒤에만 BE 계약 문서로 동기화한다. topic별 부분 sync는 하지 않는다.
-- TRD 작성 후 이슈와 ADR을 만들고, 선행 조건이 충족된 이슈만 구현한다.
+- TRD 작성 후 `$create-db-schema`으로 최신 DB schema resource를 확정하고, 그 다음 이슈와 ADR을 만든다. 선행 조건이 충족된 이슈만 구현한다.
 - `$tdd-workflow` 완료와 전체 검증 후 PR을 생성한다.
 - 유효한 상위 산출물이 있으면 불필요하게 이전 단계를 반복하지 않는다.
 
@@ -43,12 +43,18 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 
 ### 계약과 기술 설계
 
-- `docs/negotiation/{topic}/`: FE/BE 계약 협상 기록
+- `docs/negotiation/{topic}/`: FE/BE 계약 협상 기록(협상 과정 포함)
+  - `docs/negotiation/{topic}/summarize.md`: 해당 topic에 대한 협상 내용 요약
 - `docs/contracts/{topic}.md`: 확정된 BE 구현 계약
 - `docs/trd.md`: 전체 TRD 허브
 - `docs/features/*/trd.md`: 기능별 TRD
 - `docs/websocket-spec.md`: 실시간 통신 공통 규약
 - `docs/milestones.md`: 구현 순서와 마일스톤
+
+### DB 스키마
+
+- `src/main/resources/db/migration/`: MySQL Flyway migration. 기존 version-controlled migration은 수정·삭제하지 않고 새 migration으로 변경한다.
+- `src/main/resources/nosql/{vendor}/`: 현재 fixed 아키텍처에 확정된 vendor의 NoSQL schema definition. 신규 vendor 또는 RDB/NoSQL 전환은 `$architecture-decision`으로 먼저 확정한다.
 
 ### 이슈와 ADR
 
@@ -67,7 +73,7 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 - 도메인은 Spring, JPA, 웹, 메시징 등 외부 기술에 의존하지 않는다.
 - 모듈 간 협력은 공개 애플리케이션 포트 또는 도메인 이벤트를 사용한다.
 - 전역 계층 패키지, 모듈 간 직접 저장소 접근과 우회 의존성을 만들지 않는다.
-- DB 스키마 변경은 Flyway 마이그레이션으로 관리한다.
+- DB 스키마 변경은 `$create-db-schema`이 생성한 Flyway migration으로 관리한다. DB에 직접 DDL/DML을 실행하지 않는다.
 
 ## 검증과 하네스
 
@@ -88,6 +94,7 @@ $spec-interview -> $spec-review -> $create-prd -> $architecture-decision -> $neg
 - 시작 전 `git status --short`로 기존 변경을 확인하고 관련 없는 변경을 되돌리지 않는다.
 - 구현 범위와 AC는 현재 이슈 문서를 기준으로 제한한다.
 - 외부 계약이 필요한 이슈는 `docs/contracts/`의 확정 상태를 먼저 확인한다.
+- 이슈를 만들기 전 `$create-db-schema`의 `db-schema` 출처 상태를 확인한다.
 - 하위 산출물을 만들기 전 출처 상태를 검증하고, stale이면 해당 산출물을 다시 생성한 뒤 상태를 기록한다.
 - `$tdd-workflow`의 RED, GREEN, BLUE, 보안 검토와 AC 검증 순서를 따른다.
 - 요구사항, 계약 또는 아키텍처 충돌은 코드를 맞추기 전에 상위 단계에서 해결한다.
