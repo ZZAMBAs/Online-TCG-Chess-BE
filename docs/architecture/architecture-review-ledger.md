@@ -18,8 +18,8 @@
 | data-cache-messaging-storage | 2026-07-14 | docs/cards·docs/card-packs 작성 원천, RDB 불변 버전·활성 버전 실행 원천 | false | 기존 미확정 카드팩 저장 방식 확정 |
 | security-secret-boundary | 2026-07-10 | Security session, profile/env secret | true | 보안·secret 정책 변화 없음 |
 | operations-observability-infra | 2026-07-10 | Actuator/Prometheus/log, platform 미확정 | true | 관측 요구·설정 변화 없음 |
-| cicd | 2026-07-14 | 카드·카드팩 catalog와 effect 완결성 required check 조건 확정 | false | 카드팩 배포 검증 경계 추가 |
-| harness-guardrails | 2026-07-14 | 카드·카드팩 catalog·effect·RDB 동기화 gate 추가 | false | 카드팩 검증 gate 분류 |
+| cicd | 2026-07-14 | catalog/effect gate와 BE bundle·FE commit pin drift required check 확정 | false | canonical 계약 번들 전달·검증 경계 추가 |
+| harness-guardrails | 2026-07-14 | catalog·effect·RDB 동기화와 양쪽 계약 bundle drift gate 추가 | false | FE 공유 방식 미확정 해소 |
 | scalability-transition | 2026-07-10 | 정성적 trigger 후 재인터뷰 | true | 분산·확장 요구 변화 없음 |
 
 ## 영역별 상세
@@ -51,14 +51,14 @@
 ### harness-guardrails
 
 - last_reviewed_at: 2026-07-14
-- source_documents: `docs/architecture/harness-guardrails.md`, `docs/architecture/cicd-architecture.md`, `docs/architecture/interview-20260714/interview-log.md`, `build.gradle`, `.github/workflows/backend-ci.yml`
+- source_documents: `docs/architecture/harness-guardrails.md`, `docs/architecture/cicd-architecture.md`, `docs/architecture/interview-20260714/interview-log.md`, `docs/negotiation/contract-fixture/summarize.md`, `build.gradle`, `.github/workflows/backend-ci.yml`
 - source_fingerprint: harness `70772321d297`, cicd `bd706d31ba7b`
 - implementation_paths: `build.gradle`, `src/test`, `.github/workflows`
 - implementation_fingerprint: ArchUnit test, Spotless, GitHub Actions CI, 실행 가능한 Gradle wrapper 반영
-- decision_summary: 기존 Hard/Conditional 분류 유지, 카드·카드팩 catalog와 effect 완결성은 구현 즉시 Hard, RDB 동기화는 persistence 구현 시 Testcontainers 검증
-- skip_conditions: 카드·팩 catalog validator, effect registry, fixed contract와 persistence 구현이 아직 없고 관련 CI 설정이 변하지 않음
-- re_review_triggers: 카드·팩 catalog validator/effect registry/persistence 구현, FE/BE 계약 fixed, Testcontainers 또는 CI workflow 변경
-- latest_result: 문서 gate를 확정했고 기능 코드·Gradle 설정 변경은 후속 TDD로 이관
+- decision_summary: 기존 Hard/Conditional 분류 유지, catalog/effect 검증과 함께 BE canonical bundle 재계산 및 FE commit pin·checked-in sync drift를 구현 즉시 Hard gate로 전환
+- skip_conditions: 계약 bundle 생성·FE 동기화 구현과 관련 CI 설정이 변하지 않음
+- re_review_triggers: canonical bundle 구조·소유권·전달 방식 변경, artifact registry 도입, FE pin 방식 변경, 계약 생성 task 또는 CI workflow 구현
+- latest_result: ARCH-ADR-004로 FE 공유 방식을 확정하고 runtime 원격 의존 없이 양쪽 CI drift gate를 문서화. 실제 task·workflow는 후속 TRD/TDD로 이관
 
 ### module-boundaries
 
@@ -75,14 +75,14 @@
 ### cicd
 
 - last_reviewed_at: 2026-07-14
-- source_documents: `docs/architecture/cicd-architecture.md`, `docs/architecture/harness-guardrails.md`, `docs/architecture/interview-20260714/interview-log.md`
+- source_documents: `docs/architecture/cicd-architecture.md`, `docs/architecture/harness-guardrails.md`, `docs/architecture/interview-20260714/interview-log.md`, `docs/negotiation/contract-fixture/summarize.md`
 - source_fingerprint: cicd `bd706d31ba7b`, harness `70772321d297`
 - implementation_paths: `.github/workflows/backend-ci.yml`, `build.gradle`
 - implementation_fingerprint: 현재 `spotlessCheck test`, catalog 검증 task 미구현
-- decision_summary: 카드·팩 활성 manifest·catalog와 카드 effect·contract 완결성은 구현 시 required check, RDB 충돌은 기동 차단
-- skip_conditions: 카드·팩 catalog 관련 구현과 배포 workflow가 아직 없고 기존 CI가 변하지 않음
-- re_review_triggers: 카드·팩 catalog task, CD, application startup sync, migration/rollback workflow 구현
-- latest_result: gate 정책 확정, repo 설정 변경은 후속 구현으로 이관
+- decision_summary: catalog/effect 완결성과 BE canonical bundle 재계산, FE pin·checked-in bundle·generated output 일치를 구현 시 required check로 적용
+- skip_conditions: catalog·contract generation 관련 구현과 CI workflow가 아직 없고 기존 CI가 변하지 않음
+- re_review_triggers: catalog/contract task, FE contract sync workflow, artifact registry, CD, application startup sync, migration/rollback workflow 구현
+- latest_result: 계약 변경의 BE commit과 FE 채택 commit을 분리하고 CI에서 manifest/fingerprint drift를 차단하도록 확정. repo 설정은 후속 구현으로 이관
 
 ### cloud-hosting
 

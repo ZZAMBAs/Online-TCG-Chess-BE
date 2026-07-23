@@ -13,6 +13,7 @@
 | ArchUnit/Spotless Hard gate | interview | AI 하네스 결정 | `harness-guardrails.md` | 확정 |
 | Conditional static analysis/test tools | interview | AI 하네스 결정 | `harness-guardrails.md` | 확정 |
 | OpenAPI + STOMP schema/fixture | spec/interview | 인터페이스 안정성 | `harness-guardrails.md`, `cicd-architecture.md` | 확정 |
+| BE canonical 계약 번들 + FE BE-commit pin/checked-in sync | negotiation/architecture interview | FE/BE 동일 bundle 사용과 drift 차단 | `harness-guardrails.md`, `cicd-architecture.md`, `fixed-20260714/harness-fixed.md`, `adr/adr-004-canonical-contract-bundle-fe-commit-pin.md` | 확정 |
 | Actuator/Prometheus/structured log | spec/interview | 운영·보호 장치 | `infrastructure-architecture.md` | 확정 |
 | GameEvent 기반 card analytics read model | spec/interview | 주요 메트릭·저장 원칙 | `server-architecture.md`, `infrastructure-architecture.md` | 확정 |
 | `docs/cards` 작성·배포 원천 + RDB 불변 버전 동기화 | spec/prd/interview | 카드 식별자·버전 불변성과 경기별 고정 | `server-architecture.md`, `infrastructure-architecture.md`, `cicd-architecture.md`, `fixed-20260714/impl-fixed.md` | 확정 |

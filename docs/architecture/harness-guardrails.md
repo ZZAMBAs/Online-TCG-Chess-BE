@@ -26,6 +26,8 @@
 - 카드 버전 불변 동기화와 경기별 활성 버전 고정: persistence 구현 시 Testcontainers MySQL 검증에 포함
 - 카드팩 catalog schema·버전 중복·활성 manifest·카드 참조·fingerprint 검증: validator 구현 즉시 Hard gate로 전환
 - 카드팩 버전 불변 동기화와 manifest 기반 활성 전환: persistence 구현 시 Testcontainers MySQL 검증에 포함
+- BE canonical OpenAPI 3.1·STOMP JSON Schema·fixture·manifest fingerprint 재계산: 계약 번들 생성 즉시 Hard gate로 전환
+- FE의 pin된 BE commit·checked-in bundle·생성 TypeScript/validator/fixture 일치 검증: FE 계약 동기화 즉시 FE Hard gate로 전환
 
 ## Advisory 도구
 
@@ -46,7 +48,12 @@
 ## Frontend 강제 규칙
 
 - FE 계약이 합의되기 전에는 적용하지 않는다.
-- 합의 후 OpenAPI/STOMP schema/fixture drift를 검증한다.
+- BE 저장소의 canonical 계약 번들을 소유 원천으로 사용하고 FE는 적용할 BE git commit을 명시적으로 pin한다.
+- BE의 version-controlled OpenAPI·STOMP schema와 authored fixture 원본만 사람이 수정하는 단일 작성 정본이며 manifest, fingerprint와 언어별 생성 산출물은 결정적 파생물이다.
+- FE에는 pin된 commit의 bundle을 checked-in copy로 두며 독립적인 계약 원천을 만들지 않는다.
+- FE 채택 metadata는 allowlist canonical BE repository identity, full 40-character commit, bundle root와 expected root fingerprint를 함께 고정한다.
+- FE 일반 build·test는 checked-in copy만 사용한다. 별도 contract-drift CI job만 최신 branch를 탐색하지 않고 정확히 pin된 BE commit을 read-only checkout해 protected default branch 승인 여부와 canonical bundle bytes, copy, manifest, fingerprint의 drift를 검증한다.
+- BE는 빈 임시 디렉터리에서 canonical source→bundle을 재생성하고 FE는 manifest allowlist data file만 빈 staging directory로 복사한 뒤 FE의 lockfile-pinned generator를 clean temp에서 실행한다. stale/unmanifested/missing file, 직접 수정한 generated output, pin-only/copy-only 변경과 fetched BE script 실행은 금지한다.
 
 ## CI Required Check
 
@@ -63,6 +70,9 @@
 
 - CD 설계 전까지 수동 승인만 가능하다.
 - provider 확정 후 Flyway migration, smoke test, rollback, post-deploy metric check를 정의한다.
+- BE commit pin은 runtime 호환성 협상이 아니다. production 최초 배포 뒤 기존 closed validator를 깨는 변경은 parallel version 또는 expand-contract 없이 활성화하지 않는다.
+- FE·BE artifact의 adopted bundle root fingerprint compatibility gate는 CD 확정 뒤 추가한다. 그 전에는 post-launch breaking contract activation을 허용하지 않는다.
+- 전체 REST/STOMP/오류/fixture manifest closure가 fixed되는 `contract-schema-closure` 뒤 계약 bundle gate를 활성화한다.
 
 ## Operational Readiness Gate
 
@@ -90,6 +100,5 @@
 ## 미확정 사항
 
 - PMD/SpotBugs/JaCoCo의 세부 rule와 threshold
-- contract test fixture와 FE 연동 방식
 - 카드·카드팩 catalog 검증 task와 효과 처리 registry 구현 시점
 - SLO/alert/RPO/RTO 기준
